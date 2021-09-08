@@ -1,0 +1,192 @@
+name: Universes
+version: ${project.version}
+main: net.whispwriting.universes.Universes
+api-version: "1.17"
+prefix: Universes
+authors: [WhispTheFox]
+description: A plugin to allow for making more worlds in the server
+website: https://whispwriting.net
+depend:
+  - Vault
+
+
+commands:
+  universecreate:
+    description: creates a world
+    usage: /universecreate
+    aliases: uc
+  universeteleport:
+    description: teleport to a given world
+    usage: /universeteleport
+    aliases: ut
+  universeoverride:
+    description: modify overrides
+    usage: /universeoverride
+    aliases: uo
+  universeimport:
+    description: imports a world
+    usage: /universeimport
+    aliases: ui
+  universelist:
+    description: lists all loaded worlds
+    usage: /universelist
+    aliases: ul
+  universemodify:
+    description: modify the settings of a world
+    usage: /universemodify
+    aliases: um
+  universedelete:
+    description: deletes a world
+    usage: /universedelete
+    aliases: ud
+  universeunload:
+    description: unloads a world
+    usage: /universeunload
+    aliases: uu
+  uconfirm:
+    description: confirms a deletion
+    usage: /uconfirm
+    aliases: confirm
+  ucancel:
+    description: cancels a deletion
+    usage: /ucancel
+    aliases: cancel
+  universehelp:
+    description: shows help page
+    usage: /universehelp
+    aliases: uh
+  universereload:
+    description: reload the server
+    usage: /universereload
+    aliases: ur
+  universekits:
+    description: show the available kits in your current world
+    usage: /universekits
+    aliases: uk
+  usetspawn:
+    description: Sets the spawn point for first join users
+    usage: /usetspawn
+    aliases: usp
+  universespawn:
+    description: Teleports the user to the world spawn
+    usage: /universespawn
+    aliases: us
+  universeconvert:
+    description: convert worlds to new storage method
+    usage: /uconvert
+    aliases: uco
+  universeinfo:
+    description: displays the info for a given world
+    usage: /universeinfo
+    aliases: uinfo
+  ueconomy:
+    description: admin economy command
+    usage: /ueconomy
+    aliases:
+      - ueco
+      - eco
+  ubalance:
+    description: check the player balance
+    usage: /ubalance
+    aliases:
+      - bal
+      - balance
+  universeresetplayercount:
+    description: reset the player count for a given world
+    usage: /universeresetplayercount
+    aliases: urpc
+
+permissions:
+  Universes.override.gamemode:
+    description: overrides the gamemode update on world change
+    default: op
+  Universes.override.fullworld:
+    description: override the block on joining full worlds
+    default: op
+  Universes.override.flight:
+    description: allows overriding allowFlight
+    default: op
+  Universes.override.perworldinv:
+    description: allows override per world inventories
+    default: op
+  Universes.override.blockedCommands:
+    description: allows override blocked commands
+    default: op
+  Universes.override.*:
+    description: allows players to change all overrides
+    default: op
+    children:
+      Universes.override.gamemode: true
+      Universes.override.fullworld: true
+      Universes.override.flight: true
+      Universes.override.perworldinv: true
+      Universes.override.blockedCommands: true
+  Universes.createworld:
+    description: allows for creating worlds
+    defult: op
+  Universes.importworld:
+    description: allows for importing worlds
+    default: op
+  Universes.listworlds:
+    description: allows listing worlds
+    default: op
+  Universes.modify:
+    description: allows modifying world settings
+    default: op
+  Universes.delete:
+    description: allows deleting a world
+    default: op
+  Universes.unload:
+    description: allows unloading a world
+    default: op
+  Universes.teleport:
+    description: allows teleporting between worlds
+    default: op
+  Universes.teleport.*:
+    description: allows teleporting to all worlds
+    default: op
+  Universes.reload:
+    description: allows using /universes reload
+    default: op
+  Universes.usetspawn:
+    description: allows using /usetspawn
+    default: op
+  Universes.spawn:
+    description: allows using /universespawn
+    default: op
+  Universes.convert:
+    description: allows using /universeconvert
+    default: op
+  Universes.resetplayercount:
+    description: allows /universeresetplayercount
+    default: op
+  Universes.info:
+    description: allows using /universeinfo
+    default: op
+  Universes.economy.admin:
+    description: allows using /ueconomy
+    default: op
+  Universes.economy.use:
+    description: allows using basic economy commands like /bal and /pay
+    default: true
+  Universes.*:
+    description: Wildcard permission
+    default: op
+    children:
+      Universes.override.*: true
+      Universes.createworld: true
+      Universes.importworld: true
+      Universes.listworlds: true
+      Universes.modify: true
+      Universes.delete: true
+      Universes.unload: true
+      Universes.teleport: true
+      Universes.reload: true
+      Universes.usetspawn: true
+      Universes.spawn: true
+      Universes.convert: true
+      Universe.resetplayercount: true
+      Universe.info: true
+      Universes.economy.admin: true
+      Universes.economy.use: true
+      Universes.teleport.*: true
