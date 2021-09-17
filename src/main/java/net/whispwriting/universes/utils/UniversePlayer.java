@@ -190,6 +190,10 @@ public class UniversePlayer {
         previousLocations = parser.buildPreviousLocations(uuid);
     }
 
+    public void setPreviousLocations(JsonObject previousLocations){
+        this.previousLocations = previousLocations;
+    }
+
     public void buildBalances(){
         for (World world : Bukkit.getWorlds()){
             PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), world.getName());

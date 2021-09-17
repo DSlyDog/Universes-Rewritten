@@ -36,8 +36,10 @@ public class PlayerChangeOnlineState implements Listener {
         UniversePlayer uPlayer = new UniversePlayer(uuid, player, plugin);
         plugin.onlinePlayers.put(name, uPlayer);
         plugin.universes.get(player.getWorld().getName()).incrementPlayerCount();
-        //uPlayer.buildStats();
-        uPlayer.buildBalances();
+        uPlayer.buildStats();
+        if (plugin.useEconomy)
+            if (Universes.econ != null)
+                uPlayer.buildBalances();
         uPlayer.buildPreviousLocations();
     }
 

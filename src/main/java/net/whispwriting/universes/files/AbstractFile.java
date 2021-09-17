@@ -53,6 +53,7 @@ public class AbstractFile {
     }
 
     public void delete() {
+        config = null;
         file.delete();
     }
 }

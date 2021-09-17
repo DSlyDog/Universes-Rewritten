@@ -24,7 +24,7 @@ public class UniverseLoader {
         plugin.getCommand("universekits").setExecutor(new KitCommand(plugin));
         plugin.getCommand("usetspawn").setExecutor(new FirstJoinSpawnCommand(plugin.spawnFile));
         plugin.getCommand("universespawn").setExecutor(new SpawnCommand(plugin));
-        plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin));
+        plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin, plugin.sql));
         plugin.getCommand("universeinfo").setExecutor(new InfoCommand(plugin));
         plugin.getCommand("universeresetplayercount").setExecutor(new PlayerCountResetCommand(plugin));
         plugin.getCommand("ueconomy").setExecutor(new EconomyCommand());

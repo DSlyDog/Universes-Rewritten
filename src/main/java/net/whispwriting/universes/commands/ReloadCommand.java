@@ -1,10 +1,7 @@
 package net.whispwriting.universes.commands;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.ChatPrefixFile;
-import net.whispwriting.universes.files.ConfigFile;
-import net.whispwriting.universes.files.KitsFile;
-import net.whispwriting.universes.files.SpawnFile;
+import net.whispwriting.universes.files.*;
 import net.whispwriting.universes.utils.WorldLoader;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,6 +27,8 @@ public class ReloadCommand implements CommandExecutor {
         plugin.spawnFile = new SpawnFile(plugin);
         plugin.kitsFile = new KitsFile(plugin);
         plugin.prefixFile = new ChatPrefixFile(plugin);
+        plugin.economyFile = new EconomyConfig(plugin);
+        plugin.groupsFile = new GroupsFile(plugin);
         plugin.perWorldInventories = plugin.config.get().getBoolean("per-world-inventories");
         plugin.inventoryGrouping = plugin.config.get().getBoolean("per-world-inventory-grouping");
         plugin.perWorldStats = plugin.config.get().getBoolean("per-world-stats");
@@ -43,7 +42,15 @@ public class ReloadCommand implements CommandExecutor {
         plugin.toGroupOnRespawn = plugin.config.get().getBoolean("respawn-at-group-spawn");
         plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
         plugin.usePerWorldTeleportPermissions = plugin.config.get().getBoolean("use-per-world-teleport-permissions");
+        plugin.useEconomy = plugin.economyFile.get().getBoolean("use-universes-economy");
+        plugin.currencySingular = plugin.economyFile.get().getString("currency-name-singular");
+        plugin.currencyPlural = plugin.economyFile.get().getString("currency-name-plural");
+        plugin.currencyIndicator = plugin.economyFile.get().getString("currency-prefix");
         WorldLoader.loadWorlds(plugin);
+        if (plugin.useEconomy) {
+            plugin.setupEconomy();
+        }else
+            plugin.vaultHook.unhook();
         sender.sendMessage(ChatColor.GREEN + "reloaded config.");
         return true;
     }

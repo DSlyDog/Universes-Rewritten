@@ -32,17 +32,14 @@ public class KitCommand implements CommandExecutor {
             player.sendMessage(ChatColor.DARK_RED + "You do not have access to that command.");
             return true;
         }
-        ConfigFile config = new ConfigFile(plugin);
-        boolean perGroupKits = config.get().getBoolean("per-world-kit-grouping");
         String worldName;
         boolean openUI = false;
-        if (!perGroupKits) {
+        if (!plugin.perWorldKitGrouping) {
             worldName = player.getLocation().getWorld().getName();
             openUI = KitUI.init(worldName);
         }else{
             String world = player.getLocation().getWorld().getName();
-            GroupsFile groupFile = new GroupsFile(plugin);
-            worldName = groupFile.get().getString(world+".group");
+            worldName = plugin.universes.get(world).name();
             openUI = KitUI.init(worldName);
         }
         if (openUI){
@@ -52,11 +49,11 @@ public class KitCommand implements CommandExecutor {
                 player.openInventory(kitUI);
             }else{
                 player.sendMessage(Utils.chat("&cThere was an error opening the kits UI. Please report this to a staff member and tell them to look over the logs and console."));
-                System.out.println(Utils.chat("[Universes] &cAttempt to open Kits UI in world, "+worldName+", failed. There is a kit listed that has not yet been created."));
+                System.out.println(Utils.chat("[Universes] &cAttempt to open Kits UI in world or group, "+worldName+", failed. There is a kit listed that has not yet been created."));
             }
         }else{
             player.sendMessage(Utils.chat("&cThere was an error opening the kits UI. Please report this to a staff member and tell them to look over the logs and console."));
-            System.out.println(Utils.chat("[Universes] &cAttempt to open Kits UI in world, "+worldName+", failed. You have exceeded the kits capacity. You may not create more than 54 kits per world."));
+            System.out.println(Utils.chat("[Universes] &cAttempt to open Kits UI in world or group, "+worldName+", failed. You have exceeded the kits capacity. You may not create more than 54 kits per world."));
         }
         return true;
     }

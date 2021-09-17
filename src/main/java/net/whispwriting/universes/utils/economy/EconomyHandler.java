@@ -17,7 +17,6 @@ public class EconomyHandler implements Economy {
     private DecimalFormat formatter = new DecimalFormat("###.##");
     private Map<String, Map<String, EconomyPlayer>> players = new HashMap<>();
     private Map<String, BankAccount> accounts = new HashMap<>();
-    private String currencyLabel = "$"; /** TODO make this customizable */
     private String currentWorld;
 
     @Override
@@ -42,17 +41,17 @@ public class EconomyHandler implements Economy {
 
     @Override
     public String format(double amount) {
-        return currencyLabel + formatter.format(amount);
+        return Universes.plugin.currencyIndicator + formatter.format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return "Dollars";
+        return Universes.plugin.currencyPlural;
     }
 
     @Override
     public String currencyNameSingular() {
-        return "Dollar"; /** TODO make renamable */
+        return Universes.plugin.currencySingular;
     }
 
     @Override

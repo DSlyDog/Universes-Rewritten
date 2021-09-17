@@ -12,12 +12,15 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public final class Universes extends JavaPlugin {
 
     public ConfigFile config;
     public SpawnFile spawnFile;
     public ChatPrefixFile prefixFile;
+    public EconomyConfig economyFile;
+    public GroupsFile groupsFile = new GroupsFile(this);
     public List<PlayersWhoCanConfirm> players = new ArrayList<>();
     public KitsFile kitsFile = new KitsFile(this);
     public String defaultWorld;
@@ -42,11 +45,13 @@ public final class Universes extends JavaPlugin {
     public boolean toEntryPortal;
     public boolean toGroupOnRespawn;
     public boolean startupComplete;
-    public boolean useEconomy;
     public boolean usePerWorldTeleportPermissions;
     public boolean perWorldKitGrouping;
+    public boolean useEconomy;
+    public String currencySingular, currencyPlural;
+    public String currencyIndicator;
     public static Economy econ;
-    private VaultHook vaultHook = new VaultHook();
+    public VaultHook vaultHook = new VaultHook();
     public static Universes plugin;
 
     @Override
@@ -60,7 +65,6 @@ public final class Universes extends JavaPlugin {
         UniverseLoader.loadWorlds(this);
         WorldSettingsUI.init();
         startupComplete = true;
-        vaultHook.hook();
         setupEconomy();
         checkConfigVersion();
 
@@ -99,6 +103,7 @@ public final class Universes extends JavaPlugin {
         databaseFile.save();
         spawnFile = new SpawnFile(this);
         spawnFile.get().options().copyDefaults(true);
+        economyFile = new EconomyConfig(this);
         prefixFile = new ChatPrefixFile(this);
     }
 
@@ -125,6 +130,10 @@ public final class Universes extends JavaPlugin {
         toGroupOnRespawn = config.get().getBoolean("respawn-at-group-spawn");
         usePerWorldTeleportPermissions = config.get().getBoolean("use-per-world-teleport-permissions");
         perWorldKitGrouping = config.get().getBoolean("per-world-kit-grouping");
+        useEconomy = economyFile.get().getBoolean("use-universes-economy");
+        currencySingular = economyFile.get().getString("currency-name-singular");
+        currencyPlural = economyFile.get().getString("currency-name-plural");
+        currencyIndicator = economyFile.get().getString("currency-prefix");
     }
 
     public void checkConfigVersion(){
@@ -138,10 +147,18 @@ public final class Universes extends JavaPlugin {
             config.writeComments();
     }
 
-    private boolean setupEconomy() {
+    public boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            Bukkit.getLogger().log(Level.WARNING, "[Universes] Economy could not be enabled. Vault is missing. " +
+                    "Please install vault.");
             return false;
         }
+
+        if (!useEconomy)
+            return false;
+
+        vaultHook.hook();
+
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             return false;

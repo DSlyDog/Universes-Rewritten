@@ -84,13 +84,11 @@ commands:
     usage: /ueconomy
     aliases:
       - ueco
-      - eco
   ubalance:
     description: check the player balance
     usage: /ubalance
     aliases:
-      - bal
-      - balance
+      - ubal
   universeresetplayercount:
     description: reset the player count for a given world
     usage: /universeresetplayercount

@@ -20,6 +20,12 @@ public class EconomyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (!Universes.plugin.useEconomy){
+            sender.sendMessage(ChatColor.RED + "The Universes economy system is currently disabled");
+            return true;
+        }
+
         if (!(sender instanceof Player)){
             sender.sendMessage(ChatColor.RED + "Only players may execute that command");
             return true;

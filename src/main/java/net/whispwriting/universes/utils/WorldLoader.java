@@ -22,9 +22,8 @@ public class WorldLoader {
             firstTimeStartup(plugin, worldDir);
             Bukkit.getLogger().log(Level.INFO, "[Universes] First time setup complete");
         }else{
-            GroupsFile groupsFile = new GroupsFile(plugin);
-            for (String group : groupsFile.get().getConfigurationSection("").getKeys(false)){
-                for (String world : groupsFile.get().getStringList(group)){
+            for (String group : plugin.groupsFile.get().getConfigurationSection("").getKeys(false)){
+                for (String world : plugin. groupsFile.get().getStringList(group)){
                     plugin.groups.put(world, group);
                 }
             }

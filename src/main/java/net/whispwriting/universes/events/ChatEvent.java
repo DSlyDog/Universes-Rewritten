@@ -2,10 +2,13 @@ package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.utils.Universe;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.util.logging.Level;
 
 public class ChatEvent implements Listener {
 
@@ -25,7 +28,12 @@ public class ChatEvent implements Listener {
             else
                 prefix = "[" + universe.serverWorld().getName() + "]";
             String format = event.getFormat();
-            format = prefix + format;
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null){
+                format = prefix + format;
+            }else {
+                format = "%universes%" + format;
+            }
+            Bukkit.getLogger().log(Level.INFO, "[Universes] message format: " + format);
             event.setFormat(format);
         }
     }

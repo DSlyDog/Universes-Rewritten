@@ -10,6 +10,12 @@ import org.bukkit.entity.Player;
 public class BalanceCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (!Universes.plugin.useEconomy){
+            sender.sendMessage(ChatColor.RED + "The Universes economy system is currently disabled");
+            return true;
+        }
+
         if (!sender.hasPermission("Universes.economy.use")){
             sender.sendMessage(ChatColor.DARK_RED + "You do not have access to that command");
             return true;
