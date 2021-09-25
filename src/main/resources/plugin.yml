@@ -6,8 +6,9 @@ prefix: Universes
 authors: [WhispTheFox]
 description: A plugin to allow for making more worlds in the server
 website: https://whispwriting.net
-depend:
+softdepend:
   - Vault
+  - PlaceholderAPI
 
 
 commands:

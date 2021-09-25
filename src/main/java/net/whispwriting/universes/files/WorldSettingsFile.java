@@ -34,7 +34,7 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("blockedCommands", blockedCommands);
     }
 
-    public void updateValues(GameMode gameMode, Location spawn, String respawnWorld, int maxPlayers, boolean allowAnimals,
+    public void updateValues(GameMode gameMode, Location spawn, World.Environment environment, String respawnWorld, int maxPlayers, boolean allowAnimals,
                              Difficulty difficulty, boolean allowMonsters, boolean allowFlight, boolean allowPvp,
                              List<String> blockedCommands){
         config.set("spawn.x", spawn.getX());
@@ -42,6 +42,7 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("spawn.z", spawn.getZ());
         config.set("spawn.yaw", spawn.getYaw());
         config.set("spawn.pitch", spawn.getPitch());
+        config.set("environment", getEnvironment(environment));
         config.set("respawnWorld", respawnWorld);
         config.set("gameMode", gameMode.name().toLowerCase());
         config.set("difficulty", difficulty.name());
@@ -51,6 +52,19 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("allowFlight", allowFlight);
         config.set("allowPvP", allowPvp);
         config.set("blockedCommands", blockedCommands);
+    }
+
+    private static String getEnvironment(World.Environment environment){
+        switch (environment){
+            case NORMAL:
+                return "normal";
+            case NETHER:
+                return "nether";
+            case THE_END:
+                return "end";
+            default:
+                return "normal";
+        }
     }
 
 }

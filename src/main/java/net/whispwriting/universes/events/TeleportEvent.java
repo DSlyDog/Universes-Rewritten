@@ -24,14 +24,15 @@ public class TeleportEvent implements Listener {
     public void onTeleport(PlayerTeleportEvent event){
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL && event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             if (plugin.trackLastLocation) {
-                World world = event.getFrom().getWorld();
-                //System.out.println(world.getClass()); --CHECK CLASS
                 Universe fromUniverse = plugin.universes.get(event.getFrom().getWorld().getName());
                 Universe toUniverse = plugin.universes.get(event.getTo().getWorld().getName());
                 if (!toUniverse.serverWorld().getName().equals(fromUniverse.serverWorld().getName())) {
                     Player player = event.getPlayer();
                     UniversePlayer uPlayer = plugin.onlinePlayers.get(player.getName());
                     uPlayer.savePreviousLocation(fromUniverse, player.getLocation());
+                    if (plugin.returnToPreviousLocation){
+                        //event.setTo(uPlayer.loadPreviousLocation(toUniverse));
+                    }
                 }
             }
         }

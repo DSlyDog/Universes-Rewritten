@@ -201,8 +201,8 @@ public class Universe {
     }
 
     public void save(){
-        worldSettings.updateValues(gameMode, spawn, respawnWorld, maxPlayers, allowAnimals, world.getDifficulty(),
-                allowMonsters, allowFlight, allowPvP, blockedCommands);
+        worldSettings.updateValues(gameMode, spawn, world.getEnvironment(), respawnWorld, maxPlayers, allowAnimals,
+                world.getDifficulty(), allowMonsters, allowFlight, allowPvP, blockedCommands);
         worldSettings.save();
     }
 

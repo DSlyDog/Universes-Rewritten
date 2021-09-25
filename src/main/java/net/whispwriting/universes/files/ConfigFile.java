@@ -31,6 +31,7 @@ public class ConfigFile extends AbstractFile{
         Universes.plugin.toGroupOnRespawn = true;
         Universes.plugin.usePerWorldTeleportPermissions = false;
         Universes.plugin.perWorldKitGrouping = false;
+        Universes.plugin.returnToPreviousLocation = false;
     }
 
     @Override
@@ -104,6 +105,13 @@ public class ConfigFile extends AbstractFile{
                     "#the player will be sent to the same location that /universespawn (/us) takes them.\n" +
                     "#This is true by default.\n" +
                     "track-previous-locations: " + Universes.plugin.trackLastLocation +
+                    "\n" +
+                    "\n" +
+                    "#Return-to-previous-locations is an option that effects world changes from all causes except nether\n" +
+                    "#and end portals. This uses the locations saved by Track-previous-locations, to send players to their\n" +
+                    "#previous locations during teleports triggered by other plugins. Please note, Track-previous-locations\n" +
+                    "#MUST be set to TRUE for this to work. This is false by default.\n" +
+                    "return-to-previous-locations: " + Universes.plugin.returnToPreviousLocation +
                     "\n" +
                     "\n" +
                     "#Save-location-on-death affects previous location tracking. When this is enabled, the location of\n" +

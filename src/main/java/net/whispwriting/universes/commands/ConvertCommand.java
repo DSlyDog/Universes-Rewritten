@@ -28,10 +28,8 @@ import static org.bukkit.Difficulty.*;
 public class ConvertCommand implements CommandExecutor {
 
     private Universes plugin;
-    private List<String> groupList = new ArrayList<>();
     private SerializerOld serializerOld;
     private Serializer serializer;
-    private Map<UUID, JsonObject> playerStats = new HashMap<>();
     private SQL sql;
 
     public ConvertCommand(Universes plugin, SQL sql){
@@ -49,9 +47,9 @@ public class ConvertCommand implements CommandExecutor {
                 Universe universe = universeEntry.getValue();
                 sender.sendMessage(ChatColor.GOLD + "Converting world settings for world " + ChatColor.YELLOW + universe.serverWorld().getName());
                 WorldSettingsFile worldSettingsFile = new WorldSettingsFile(plugin, universe.serverWorld().getName());
-                worldSettingsFile.updateValues(universe.gameMode(), universe.spawn(), universe.respawnWorld(),
-                        universe.maxPlayers(), universe.isAllowAnimals(), universe.getDifficulty(), universe.isAllowMonsters(),
-                        universe.isAllowFlight(), universe.isAllowPvP(), universe.blockedCommands());
+                worldSettingsFile.updateValues(universe.gameMode(), universe.spawn(), universe.serverWorld().getEnvironment(),
+                        universe.respawnWorld(), universe.maxPlayers(), universe.isAllowAnimals(), universe.getDifficulty(),
+                        universe.isAllowMonsters(), universe.isAllowFlight(), universe.isAllowPvP(), universe.blockedCommands());
                 worldSettingsFile.save();
             }
 
@@ -99,7 +97,7 @@ public class ConvertCommand implements CommandExecutor {
                         buildPreviousLocations(player);
                     }
                     sender.sendMessage(ChatColor.GOLD + "Converting groups.yml");
-                    plugin.groupsFile.update();
+                    plugin.groupsFile.update(sender);
                     sender.sendMessage(ChatColor.GREEN + "conversion complete");
                 }
 

@@ -42,6 +42,7 @@ public class ReloadCommand implements CommandExecutor {
         plugin.toGroupOnRespawn = plugin.config.get().getBoolean("respawn-at-group-spawn");
         plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
         plugin.usePerWorldTeleportPermissions = plugin.config.get().getBoolean("use-per-world-teleport-permissions");
+        plugin.returnToPreviousLocation = plugin.config.get().getBoolean("return-to-previous-locations");
         plugin.useEconomy = plugin.economyFile.get().getBoolean("use-universes-economy");
         plugin.currencySingular = plugin.economyFile.get().getString("currency-name-singular");
         plugin.currencyPlural = plugin.economyFile.get().getString("currency-name-plural");

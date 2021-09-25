@@ -109,6 +109,7 @@ public class CreateCommand implements CommandExecutor {
             Universe universe = new Universe(name, world, true, true, true,
                     GameMode.SURVIVAL, -1, world.getSpawnLocation(), name, true, false,
                     worldSettings, blockedCommands);
+            universe.save();
             plugin.universes.put(name, universe);
             sender.sendMessage(ChatColor.GREEN + "World successfully created.");
             return world;

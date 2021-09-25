@@ -53,18 +53,18 @@ public class WorldLoader {
         GroupsFile groups = new GroupsFile(plugin);
         groups.setDefaults();
         groups.save();
+
+        Universes.plugin.config.writeCommentsFistTime();
+        Universes.plugin.config.writeComments();
     }
 
     private static void standardStartup(File file, Universes plugin){
         WorldSettingsFile worldSettings = new WorldSettingsFile(plugin, file.getName());
-        WorldCreator creator = new WorldCreator(file.getName());
-        World world = creator.createWorld();
         double x = worldSettings.get().getDouble("spawn.x");
         double y = worldSettings.get().getDouble("spawn.y");
         double z = worldSettings.get().getDouble("spawn.z");
         float yaw = (float) worldSettings.get().getDouble("spawn.yaw");
         float pitch = (float) worldSettings.get().getDouble("spawn.pitch");
-        Location spawn = new Location(world, x, y, z, yaw, pitch);
         String respawnWorld = worldSettings.get().getString("respawnWorld");
         String environment = worldSettings.get().getString("environment");
         GameMode gameMode = getGameModeFromString(worldSettings.get().getString("gameMode"));
@@ -73,7 +73,6 @@ public class WorldLoader {
         if (playerLimit >= 0)
             playerLimitEnabled = true;
         Difficulty difficulty = getDifficulty(worldSettings.get().getString("difficulty"));
-        world.setDifficulty(difficulty);
         boolean allowPvP = worldSettings.get().getBoolean("allowPvP", true);
         boolean allowAnimals = worldSettings.get().getBoolean("allowAnimals", true);
         boolean allowMonsters = worldSettings.get().getBoolean("allowMonsters", true);
@@ -83,6 +82,10 @@ public class WorldLoader {
         Generator generator = new Generator(plugin, file.getName());
         generator.setEnvironment(getEnvironment(environment));
         generator.createWorld();
+
+        World world = generator.getWorld();
+        world.setDifficulty(difficulty);
+        Location spawn = new Location(world, x, y, z, yaw, pitch);
 
         Universe universe;
         if (plugin.inventoryGrouping){

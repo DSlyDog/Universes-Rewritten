@@ -48,6 +48,7 @@ public final class Universes extends JavaPlugin {
     public boolean usePerWorldTeleportPermissions;
     public boolean perWorldKitGrouping;
     public boolean useEconomy;
+    public boolean returnToPreviousLocation;
     public String currencySingular, currencyPlural;
     public String currencyIndicator;
     public static Economy econ;
@@ -130,6 +131,7 @@ public final class Universes extends JavaPlugin {
         toGroupOnRespawn = config.get().getBoolean("respawn-at-group-spawn");
         usePerWorldTeleportPermissions = config.get().getBoolean("use-per-world-teleport-permissions");
         perWorldKitGrouping = config.get().getBoolean("per-world-kit-grouping");
+        returnToPreviousLocation = config.get().getBoolean("return-to-previous-locations");
         useEconomy = economyFile.get().getBoolean("use-universes-economy");
         currencySingular = economyFile.get().getString("currency-name-singular");
         currencyPlural = economyFile.get().getString("currency-name-plural");

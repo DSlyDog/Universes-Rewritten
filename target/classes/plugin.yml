@@ -1,13 +1,14 @@
 name: Universes
-version: 5.0-RC-5
+version: 5.0-RC-8
 main: net.whispwriting.universes.Universes
 api-version: "1.17"
 prefix: Universes
 authors: [WhispTheFox]
 description: A plugin to allow for making more worlds in the server
 website: https://whispwriting.net
-depend:
+softdepend:
   - Vault
+  - PlaceholderAPI
 
 
 commands:

@@ -43,5 +43,6 @@ public class PlayerChangeWorld implements Listener {
         if (!gameModeOverride){
             event.getPlayer().setGameMode(universe.gameMode());
         }
+
     }
 }

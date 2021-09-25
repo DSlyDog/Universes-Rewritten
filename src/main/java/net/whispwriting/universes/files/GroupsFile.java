@@ -3,7 +3,9 @@ package net.whispwriting.universes.files;
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.utils.WorldLoader;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,10 +29,18 @@ public class GroupsFile extends AbstractFile{
         config.set("default", defaultGroup);
     }
 
-    public void update(){
+    public void update(CommandSender sender){
         Map<String, List<String>> groups = new HashMap<>();
         for (World world : Bukkit.getWorlds()){
             String group = config.getString(world.getName()+".group");
+            if (group == null){
+                sender.sendMessage(ChatColor.RED + "ABORTING GROUP CONVERSION!!\n" +
+                        "An issue was detected in your groups.yml, to preserve your groups the conversion process has" +
+                        "been aborted. This is likely due to an entry being improperly formatted. Please reach out" +
+                        "to Whisp if you need help. Joining the Discord (https://discord.gg/E784KgeMQB) and ping" +
+                        "@Whisp Reedwell#5879 for the fastest response. Do not panic! None of your data has been lost.");
+                return;
+            }
             if (groups.containsKey(group)){
                 groups.get(group).add(world.getName());
             }else{
@@ -44,7 +54,6 @@ public class GroupsFile extends AbstractFile{
             file.createNewFile();
             for (Map.Entry<String, List<String>> group : groups.entrySet()){
                 String name = group.getKey();
-                System.out.println(name);
                 config.set(name, group.getValue());
             }
             save();
