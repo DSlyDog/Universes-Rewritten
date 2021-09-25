@@ -88,14 +88,14 @@ public class ConfigFile extends AbstractFile{
                     "#Use-respawnWorld will control where players are spawned when they die. In the settings.yml file\n" +
                     "#for each world, there is a respawnWorld section. Turning this option on will have players respawn\n" +
                     "#at that world. The respawnWorld world setting is set per world regardless of any configuration options.\n" +
-                    "#This is false by default." +
+                    "#This is false by default.\n" +
                     "use-respawnWorld: " + Universes.plugin.useRespawnWorld +
                     "\n" +
                     "\n" +
                     "#Use-first-join-spawn is an option that affects where users appear when they join the server for\n" +
                     "#the first time. This is useful for if you want new players to be placed in a tutorial area upon\n" +
                     "#their first join. This location is set via /usetspawn and is stored in the joinspawn.yml.\n" +
-                    "#This is false by default." +
+                    "#This is false by default.\n" +
                     "use-first-join-spawn: " + Universes.plugin.useFirstJoinSpawn +
                     "\n" +
                     "\n" +
