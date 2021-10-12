@@ -3,6 +3,7 @@ package net.whispwriting.universes.commands;
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.*;
 import net.whispwriting.universes.utils.WorldLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,18 +41,17 @@ public class ReloadCommand implements CommandExecutor {
         plugin.worldEntryPermissions = plugin.config.get().getBoolean("world-entry-permissions");
         plugin.hubOnJoin = plugin.config.get().getBoolean("rejoin-at-hub");
         plugin.toGroupOnRespawn = plugin.config.get().getBoolean("respawn-at-group-spawn");
-        plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
         plugin.usePerWorldTeleportPermissions = plugin.config.get().getBoolean("use-per-world-teleport-permissions");
         plugin.returnToPreviousLocation = plugin.config.get().getBoolean("return-to-previous-locations");
         plugin.useEconomy = plugin.economyFile.get().getBoolean("use-universes-economy");
         plugin.currencySingular = plugin.economyFile.get().getString("currency-name-singular");
         plugin.currencyPlural = plugin.economyFile.get().getString("currency-name-plural");
         plugin.currencyIndicator = plugin.economyFile.get().getString("currency-prefix");
+        plugin.netherPerOverworld = plugin.economyFile.get().getBoolean("nether-per-overworld");
+        plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
+        plugin.endPerOverworld = plugin.config.get().getBoolean("end-per-overworld");
         WorldLoader.loadWorlds(plugin);
-        if (plugin.useEconomy) {
-            plugin.setupEconomy();
-        }else
-            plugin.vaultHook.unhook();
+        plugin.setupEconomy();
         sender.sendMessage(ChatColor.GREEN + "reloaded config.");
         return true;
     }

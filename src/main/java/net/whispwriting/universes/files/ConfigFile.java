@@ -168,7 +168,7 @@ public class ConfigFile extends AbstractFile{
                     "#enabled, players will return to the portal they used to enter the nether when they leave. For\n" +
                     "#example, if they enter the nether at their base and walk 500 blocks, then build a nether portal\n" +
                     "#there to leave, instead of taking them to the relative location in the overworld, the player will\n" +
-                    "#come out at their base. This is false by default." +
+                    "#come out at their base. This is false by default.\n" +
                     "return-to-entry-portal: " + Universes.plugin.toEntryPortal +
                     "\n" +
                     "\n" +

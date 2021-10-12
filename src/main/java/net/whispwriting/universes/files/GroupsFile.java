@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,11 +35,7 @@ public class GroupsFile extends AbstractFile{
         for (World world : Bukkit.getWorlds()){
             String group = config.getString(world.getName()+".group");
             if (group == null){
-                sender.sendMessage(ChatColor.RED + "ABORTING GROUP CONVERSION!!\n" +
-                        "An issue was detected in your groups.yml, to preserve your groups the conversion process has" +
-                        "been aborted. This is likely due to an entry being improperly formatted. Please reach out" +
-                        "to Whisp if you need help. Joining the Discord (https://discord.gg/E784KgeMQB) and ping" +
-                        "@Whisp Reedwell#5879 for the fastest response. Do not panic! None of your data has been lost.");
+                catastroiphicFailure(sender, 1);
                 return;
             }
             if (groups.containsKey(group)){
@@ -50,8 +47,13 @@ public class GroupsFile extends AbstractFile{
             }
         }
         try {
-            file.delete();
+            boolean success = file.delete();
+            if (!success){
+                catastroiphicFailure(sender, 2);
+                return;
+            }
             file.createNewFile();
+            config = YamlConfiguration.loadConfiguration(file);
             for (Map.Entry<String, List<String>> group : groups.entrySet()){
                 String name = group.getKey();
                 config.set(name, group.getValue());
@@ -62,6 +64,21 @@ public class GroupsFile extends AbstractFile{
             e.printStackTrace();
         }
 
+    }
+
+    private void catastroiphicFailure(CommandSender sender, int messageNumber){
+        switch (messageNumber){
+            case 1:
+                sender.sendMessage(ChatColor.RED + "ABORTING GROUP CONVERSION!!\n" +
+                        "An issue was detected in your groups.yml. To preserve your groups, the conversion process has" +
+                        "been aborted. This is likely due to an entry being improperly formatted. Please reach out" +
+                        "to Whisp if you need help. Join the Discord (https://discord.gg/E784KgeMQB) and ping" +
+                        "@Whisp Reedwell#5879 for the fastest response. Do not panic! None of your data has been lost.");
+                break;
+            case 2:
+                sender.sendMessage(ChatColor.RED + "The file could not be deleted. It is probably open somewhere");
+                break;
+        }
     }
 
 }

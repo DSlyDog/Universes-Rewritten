@@ -44,6 +44,7 @@ public class AbstractFile {
             System.out.println("Could not save file");
         }
     }
+
     public FileConfiguration get(){
         return config;
     }

@@ -52,7 +52,7 @@ public final class Universes extends JavaPlugin {
     public String currencySingular, currencyPlural;
     public String currencyIndicator;
     public static Economy econ;
-    public VaultHook vaultHook = new VaultHook();
+    public VaultHook vaultHook;
     public static Universes plugin;
 
     @Override
@@ -152,9 +152,11 @@ public final class Universes extends JavaPlugin {
     public boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             Bukkit.getLogger().log(Level.WARNING, "[Universes] Economy could not be enabled. Vault is missing. " +
-                    "Please install vault.");
+                    "Please install vault if you wish to use Universes economy.");
             return false;
         }
+
+        vaultHook = new VaultHook();
 
         if (!useEconomy)
             return false;
