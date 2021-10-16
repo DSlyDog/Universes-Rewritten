@@ -4,9 +4,13 @@ import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.utils.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.io.File;
+import java.util.List;
 
 public class UnloadCommand implements CommandExecutor {
 
@@ -32,8 +36,37 @@ public class UnloadCommand implements CommandExecutor {
             return true;
         }
         sender.sendMessage(ChatColor.GREEN + "Started unloading world.");
+        File file = new File(Universes.plugin.getDataFolder() + "/worlds/"+universe.serverWorld().getName());
+        deleteFolderContents(file);
+        file.delete();
+        removeFromGroups(universe.serverWorld());
         Bukkit.unloadWorld(universe.serverWorld(), true);
         sender.sendMessage(ChatColor.GREEN + "Unload complete.");
         return true;
+    }
+
+    private void removeFromGroups(World world){
+        String groupName = Universes.plugin.groups.get(world.getName());
+        List<String> group = Universes.plugin.groupsFile.get().getStringList(groupName);
+        group.remove(world.getName());
+        if (group.size() == 0)
+            Universes.plugin.groupsFile.get().set(groupName, null);
+        else
+            Universes.plugin.groupsFile.get().set(groupName, group);
+        Universes.plugin.groupsFile.save();
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
+    }
+
+    private void deleteFolderContents(File directory){
+        String[] files = directory.list();
+        for (String f : files){
+            File current = new File(directory.getPath(), f);
+            if (current.isDirectory()){
+                deleteFolderContents(current);
+                current.delete();
+            }else{
+                current.delete();
+            }
+        }
     }
 }

@@ -38,15 +38,7 @@ public class ConfirmCommand implements CommandExecutor {
                     player.teleport(plugin.universes.get(plugin.defaultWorld).spawn());
                 }
                 world.getEntities().clear();
-                String groupName = Universes.plugin.groups.get(world.getName());
-                List<String> group = Universes.plugin.groupsFile.get().getStringList(groupName);
-                group.remove(world.getName());
-                if (group.size() == 0)
-                    Universes.plugin.groupsFile.get().set(groupName, null);
-                else
-                    Universes.plugin.groupsFile.get().set(groupName, group);
-                Universes.plugin.groupsFile.save();
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
+                removeFromGroups(world);
                 Bukkit.getServer().unloadWorld(world, true);
                 File file = new File(Bukkit.getWorldContainer() + "/"+worldName);
                 deleteFolderContents(file);
@@ -62,6 +54,18 @@ public class ConfirmCommand implements CommandExecutor {
         }
         sender.sendMessage(ChatColor.RED + "You have nothing to confirm.");
         return true;
+    }
+
+    private void removeFromGroups(World world){
+        String groupName = Universes.plugin.groups.get(world.getName());
+        List<String> group = Universes.plugin.groupsFile.get().getStringList(groupName);
+        group.remove(world.getName());
+        if (group.size() == 0)
+            Universes.plugin.groupsFile.get().set(groupName, null);
+        else
+            Universes.plugin.groupsFile.get().set(groupName, group);
+        Universes.plugin.groupsFile.save();
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
     }
 
     private void deleteFolderContents(File directory){
