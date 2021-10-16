@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class WorldSettingsFile extends AbstractFile{
         super(pl, "settings.yml", "/worlds/" + world + "/");
     }
 
-    public void setDefaults(World world, String environment){
+    public void setDefaults(World world, String environment, String generator){
         config.set("spawn.x", world.getSpawnLocation().getX());
         config.set("spawn.y", world.getSpawnLocation().getY());
         config.set("spawn.z", world.getSpawnLocation().getZ());
@@ -23,6 +24,8 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("spawn.pitch", world.getSpawnLocation().getPitch());
         config.set("respawnWorld", world.getName());
         config.set("environment", environment);
+        config.set("seed", world.getSeed());
+        config.set("generator", generator);
         config.set("gameMode", "survival");
         config.set("playerLimit", -1);
         config.set("difficulty", world.getDifficulty().name());
@@ -66,5 +69,4 @@ public class WorldSettingsFile extends AbstractFile{
                 return "normal";
         }
     }
-
 }

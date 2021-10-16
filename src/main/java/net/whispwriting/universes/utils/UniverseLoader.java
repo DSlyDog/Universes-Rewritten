@@ -14,7 +14,7 @@ public class UniverseLoader {
         plugin.getCommand("universelist").setExecutor(new ListWorldsCommand());
         plugin.getCommand("universeteleport").setExecutor(new TeleportCommand(plugin));
         plugin.getCommand("universeoverride").setExecutor(new OverrideCommand(plugin));
-        plugin.getCommand("universemodify").setExecutor(new ModifyCommand(plugin, plugin.sql));
+        plugin.getCommand("universemodify").setExecutor(new ModifyCommand(plugin));
         plugin.getCommand("universedelete").setExecutor(new DeleteCommand(plugin));
         plugin.getCommand("universeunload").setExecutor(new UnloadCommand(plugin));
         plugin.getCommand("uconfirm").setExecutor(new ConfirmCommand(plugin));
@@ -24,7 +24,7 @@ public class UniverseLoader {
         plugin.getCommand("universekits").setExecutor(new KitCommand(plugin));
         plugin.getCommand("usetspawn").setExecutor(new FirstJoinSpawnCommand(plugin.spawnFile));
         plugin.getCommand("universespawn").setExecutor(new SpawnCommand(plugin));
-        plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin, plugin.sql));
+        plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin));
         plugin.getCommand("universeinfo").setExecutor(new InfoCommand(plugin));
         plugin.getCommand("universeresetplayercount").setExecutor(new PlayerCountResetCommand(plugin));
         plugin.getCommand("ueconomy").setExecutor(new EconomyCommand());
@@ -33,7 +33,7 @@ public class UniverseLoader {
 
     public static void registerTabCompleters(Universes plugin){
         plugin.getCommand("universecreate").setTabCompleter(new GenerateWorldTabCompleter());
-        plugin.getCommand("universeimport").setTabCompleter(new ImportWorldTabCompleter());
+        plugin.getCommand("universeimport").setTabCompleter(new GenerateWorldTabCompleter());
         plugin.getCommand("universedelete").setTabCompleter(new WorldListCompleter());
         plugin.getCommand("universeteleport").setTabCompleter(new TeleportTabComplete());
         plugin.getCommand("universespawn").setTabCompleter(new TeleportTabComplete());

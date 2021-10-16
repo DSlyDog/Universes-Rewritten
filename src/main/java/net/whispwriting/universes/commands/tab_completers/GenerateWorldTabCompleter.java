@@ -37,10 +37,16 @@ public class GenerateWorldTabCompleter implements TabCompleter {
             return difficulty;
         }else if (args.length == 5){
             List<String> options = new ArrayList<>();
+            options.add("group");
             options.add("seed");
             options.add("generator");
             return options;
         }else if (args.length == 6){
+            List<String> options = new ArrayList<>();
+            options.add("seed");
+            options.add("generator");
+            return options;
+        }else if (args.length == 7){
             List<String> options = new ArrayList<>();
             options.add("generator");
             return options;

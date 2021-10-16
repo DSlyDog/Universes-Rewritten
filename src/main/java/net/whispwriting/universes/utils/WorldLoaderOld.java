@@ -6,6 +6,7 @@ import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.GroupsFile;
 import net.whispwriting.universes.files.WorldSettingsFile;
 import net.whispwriting.universes.utils.generation.UniversesGenerator;
+import net.whispwriting.universes.utils.sql.SQL;
 import net.whispwriting.universes.utils.sql.SQLResult;
 import org.bukkit.*;
 
@@ -20,9 +21,9 @@ import static org.bukkit.Difficulty.*;
 
 public class WorldLoaderOld {
 
-    public static void loadWorlds(Universes plugin){
+    public static void loadWorlds(Universes plugin, SQL sql){
         try {
-            SQLResult result = plugin.sql.query("select * from universe", "query");
+            SQLResult result = sql.query("select * from universe", "query");
             if (!result.isBooleanResult()) {
                 ResultSet resultSet = result.sqlResults();
                 while (resultSet.next()) {

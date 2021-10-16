@@ -138,7 +138,6 @@ public class UniversePlayer {
             player.setLevel(savedStats.get("xpLevel").getAsInt());
             player.setExp(savedStats.get("exp").getAsFloat());
         }else{
-            System.out.println("No saved stats");
             player.setHealth(20);
             player.setFoodLevel(20);
             player.setSaturation(5);

@@ -20,11 +20,9 @@ import java.util.List;
 public class ModifyCommand implements CommandExecutor {
 
     private Universes plugin;
-    private SQL sql;
 
-    public ModifyCommand(Universes plugin, SQL sql){
+    public ModifyCommand(Universes plugin){
         this.plugin = plugin;
-        this.sql = sql;
     }
 
     @Override

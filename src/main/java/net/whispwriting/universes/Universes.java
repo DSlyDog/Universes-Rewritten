@@ -27,9 +27,6 @@ public final class Universes extends JavaPlugin {
     public Map<String, UniversePlayer> onlinePlayers = new HashMap<>();
     public Map<String, Universe> universes = new HashMap<>();
     public Map<String, String> groups = new HashMap<>();
-    public SQL sql;
-    private DatabaseFile databaseFile;
-    public boolean useRemote;
     public boolean perWorldInventories;
     public boolean inventoryGrouping;
     public boolean perWorldStats;
@@ -79,8 +76,8 @@ public final class Universes extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        sql.close();
-        vaultHook.unhook();
+        if (vaultHook != null)
+            vaultHook.unhook();
     }
 
     private void registerOnlinePlayers(){
@@ -98,10 +95,6 @@ public final class Universes extends JavaPlugin {
 
     private void loadFiles(){
         config = new ConfigFile(this);
-        databaseFile = new DatabaseFile(this);
-        databaseFile.createConfig();
-        databaseFile.get().options().copyDefaults(true);
-        databaseFile.save();
         spawnFile = new SpawnFile(this);
         spawnFile.get().options().copyDefaults(true);
         economyFile = new EconomyConfig(this);
@@ -109,12 +102,6 @@ public final class Universes extends JavaPlugin {
     }
 
     public void setDefaults(){
-        useRemote = databaseFile.get().getBoolean("remote-database");
-        if (useRemote)
-            sql = new MySQL(databaseFile);
-        else
-            sql = new SQLite(this);
-
         perWorldInventories = config.get().getBoolean("per-world-inventories");
         inventoryGrouping = config.get().getBoolean("per-world-inventory-grouping");
         perWorldStats = config.get().getBoolean("per-world-stats");

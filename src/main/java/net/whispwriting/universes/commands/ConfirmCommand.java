@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
+import java.util.logging.Level;
 
 public class ConfirmCommand implements CommandExecutor {
 
@@ -36,14 +38,22 @@ public class ConfirmCommand implements CommandExecutor {
                     player.teleport(plugin.universes.get(plugin.defaultWorld).spawn());
                 }
                 world.getEntities().clear();
-                GroupsFile groupsFile = new GroupsFile(plugin);
-                groupsFile.get().set(world.getName(), null);
-                groupsFile.save();
+                String groupName = Universes.plugin.groups.get(world.getName());
+                List<String> group = Universes.plugin.groupsFile.get().getStringList(groupName);
+                group.remove(world.getName());
+                if (group.size() == 0)
+                    Universes.plugin.groupsFile.get().set(groupName, null);
+                else
+                    Universes.plugin.groupsFile.get().set(groupName, group);
+                Universes.plugin.groupsFile.save();
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
                 Bukkit.getServer().unloadWorld(world, true);
                 File file = new File(Bukkit.getWorldContainer() + "/"+worldName);
                 deleteFolderContents(file);
                 file.delete();
-                plugin.sql.query("delete from universe where name='" + worldName + "'", "update");
+                file = new File(Universes.plugin.getDataFolder() + "/worlds/"+worldName);
+                deleteFolderContents(file);
+                file.delete();
                 sender.sendMessage(ChatColor.GREEN + "World deleted.");
                 plugin.universes.remove(worldName);
                 plugin.players.remove(p);

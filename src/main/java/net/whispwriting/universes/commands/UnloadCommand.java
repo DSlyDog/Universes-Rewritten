@@ -33,7 +33,6 @@ public class UnloadCommand implements CommandExecutor {
         }
         sender.sendMessage(ChatColor.GREEN + "Started unloading world.");
         Bukkit.unloadWorld(universe.serverWorld(), true);
-        plugin.sql.query("delete from universe where name='" + universe.serverWorld().getName() + "'", "update");
         sender.sendMessage(ChatColor.GREEN + "Unload complete.");
         return true;
     }

@@ -4,7 +4,9 @@ import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.GroupsFile;
 import net.whispwriting.universes.files.WorldSettingsFile;
 import net.whispwriting.universes.utils.generation.Generator;
+import net.whispwriting.universes.utils.generation.UniversesGenerator;
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class WorldLoader {
         }
         for (World world : Bukkit.getWorlds()){
             WorldSettingsFile worldSettings = new WorldSettingsFile(plugin, world.getName());
-            worldSettings.setDefaults(world, world.getEnvironment().name().toLowerCase());
+            worldSettings.setDefaults(world, world.getEnvironment().name().toLowerCase(), null);
             worldSettings.save();
             world.setDifficulty(EASY);
             Universe universe = new Universe(world.getName(), world, true, true, true,
@@ -67,12 +69,14 @@ public class WorldLoader {
         float pitch = (float) worldSettings.get().getDouble("spawn.pitch");
         String respawnWorld = worldSettings.get().getString("respawnWorld");
         String environment = worldSettings.get().getString("environment");
+        long seed = worldSettings.get().getLong("seed");
+        String generatorName = worldSettings.get().getString("generator");
         GameMode gameMode = getGameModeFromString(worldSettings.get().getString("gameMode"));
         int playerLimit = worldSettings.get().getInt("playerLimit");
         boolean playerLimitEnabled = false;
         if (playerLimit >= 0)
             playerLimitEnabled = true;
-        Difficulty difficulty = getDifficulty(worldSettings.get().getString("difficulty"));
+        Difficulty difficulty = getDifficulty(worldSettings.get().getString("difficulty"), null);
         boolean allowPvP = worldSettings.get().getBoolean("allowPvP", true);
         boolean allowAnimals = worldSettings.get().getBoolean("allowAnimals", true);
         boolean allowMonsters = worldSettings.get().getBoolean("allowMonsters", true);
@@ -80,7 +84,9 @@ public class WorldLoader {
         List<String> blockedCommands = worldSettings.get().getStringList("blockedCommands");
 
         Generator generator = new Generator(plugin, file.getName());
-        generator.setEnvironment(getEnvironment(environment));
+        generator.setEnvironment(getEnvironment(environment, null));
+        generator.setGenerator(generatorName);
+        generator.setSeed(seed);
         generator.createWorld();
 
         World world = generator.getWorld();
@@ -90,6 +96,12 @@ public class WorldLoader {
         Universe universe;
         if (plugin.inventoryGrouping){
             String groupName = plugin.groups.get(world.getName());
+            if (groupName == null) {
+                groupName = world.getName();
+                Bukkit.getLogger().log(Level.WARNING, "Grouping is enabled but " + world.getName() + " does not " +
+                        "appear to have an associated group in the groups.yml. To prevent errors, the world name has " +
+                        "been assigned as its group. You should consider adding this world to the groups.yml");
+            }
             universe = new Universe(groupName, world, allowAnimals, allowMonsters, allowFlight, gameMode,
                     playerLimit, spawn, respawnWorld, allowPvP, playerLimitEnabled, worldSettings, blockedCommands);
         }else{
@@ -100,8 +112,65 @@ public class WorldLoader {
         plugin.universes.put(file.getName(), universe);
     }
 
-    private static World.Environment getEnvironment(String environment){
-        switch (environment){
+    public static World constructWorld(UniversesGenerator universesGenerator, CommandSender sender, String environment, String type,
+                                 String difficulty, String group, String seedString, String generator) {
+        universesGenerator.setEnvironment(getEnvironment(environment, sender));
+        universesGenerator.generateStructures(true);
+        universesGenerator.setType(getWorldType(type, sender));
+        if (seedString != null) {
+            try {
+                universesGenerator.setSeed(Long.parseLong(seedString));
+            }catch(NumberFormatException e){
+                universesGenerator.setGenerator(seedString);
+            }
+        }
+        if (generator != null)
+            universesGenerator.setGenerator(generator);
+        universesGenerator.createWorld();
+        World world = universesGenerator.getWorld();
+        if (universesGenerator.getWorld() != null) {
+            WorldSettingsFile worldSettings = new WorldSettingsFile(Universes.plugin, world.getName());
+            worldSettings.setDefaults(world, environment, generator);
+            worldSettings.save();
+            world.setDifficulty(getDifficulty(difficulty, sender));
+            if (group == null) {
+                group = world.getName();
+                if (Universes.plugin.inventoryGrouping)
+                    sender.sendMessage("Grouping is enabled but " + world.getName() + " does not " +
+                            "appear to have an associated group in the groups.yml. To prevent errors, the world name has " +
+                            "been assigned as its group. You should consider adding this world to the groups.yml");
+            }
+            List<String> groupList = Universes.plugin.groupsFile.get().getStringList(group);
+            groupList.add(world.getName());
+            Universes.plugin.groupsFile.get().set(group, groupList);
+            Universes.plugin.groupsFile.save();
+            Universes.plugin.groups.put(world.getName(), group);
+            String name = world.getName();
+            List<String> blockedCommands = new ArrayList<>();
+            Universe universe;
+            if (Universes.plugin.inventoryGrouping) {
+                universe = new Universe(group, world, true, true, true,
+                        GameMode.SURVIVAL, -1, world.getSpawnLocation(), name, true, false,
+                        worldSettings, blockedCommands);
+                universe.save();
+            }else{
+                universe = new Universe(name, world, true, true, true,
+                        GameMode.SURVIVAL, -1, world.getSpawnLocation(), name, true, false,
+                        worldSettings, blockedCommands);
+                universe.save();
+            }
+            Universes.plugin.universes.put(name, universe);
+            sender.sendMessage(ChatColor.GREEN + "World successfully created.");
+            return world;
+        }else {
+            sender.sendMessage(ChatColor.RED + "World creation failed.");
+            return null;
+        }
+    }
+
+    private static World.Environment getEnvironment(String arg, CommandSender sender) {
+        arg = arg.toLowerCase();
+        switch (arg){
             case "normal":
                 return World.Environment.NORMAL;
             case "nether":
@@ -109,23 +178,27 @@ public class WorldLoader {
             case "end":
                 return World.Environment.THE_END;
             default:
+                if (sender != null)
+                    sender.sendMessage(ChatColor.RED + "Invalid environment, defaulting to normal world.");
                 return World.Environment.NORMAL;
         }
     }
 
-    private static Difficulty getDifficulty(String arg) {
+    private static Difficulty getDifficulty(String arg, CommandSender sender) {
         arg = arg.toLowerCase();
         switch (arg){
             case "peaceful":
-                return PEACEFUL;
+                return Difficulty.PEACEFUL;
             case "easy":
-                return EASY;
+                return Difficulty.EASY;
             case "normal":
-                return NORMAL;
+                return Difficulty.NORMAL;
             case "hard":
-                return HARD;
+                return Difficulty.HARD;
             default:
-                return EASY;
+                if (sender != null)
+                    sender.sendMessage(ChatColor.RED + "Invalid difficulty, defaulting to normal difficulty.");
+                return Difficulty.NORMAL;
         }
     }
 
@@ -139,6 +212,24 @@ public class WorldLoader {
                 return GameMode.SPECTATOR;
             default:
                 return GameMode.SURVIVAL;
+        }
+    }
+
+    private static WorldType getWorldType(String arg, CommandSender sender) {
+        arg = arg.toLowerCase();
+        switch (arg){
+            case "amplified":
+                return WorldType.AMPLIFIED;
+            case "flat":
+                return WorldType.FLAT;
+            case "large_biomes":
+                return WorldType.LARGE_BIOMES;
+            case "normal":
+                return WorldType.NORMAL;
+            default:
+                if (sender != null)
+                    sender.sendMessage(ChatColor.RED + "Invalid world type, defaulting to normal world.");
+                return WorldType.NORMAL;
         }
     }
 }

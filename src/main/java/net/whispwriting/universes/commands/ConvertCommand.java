@@ -8,8 +8,10 @@ import net.whispwriting.universes.utils.Serializer;
 import net.whispwriting.universes.utils.SerializerOld;
 import net.whispwriting.universes.utils.Universe;
 import net.whispwriting.universes.utils.WorldLoaderOld;
+import net.whispwriting.universes.utils.sql.MySQL;
 import net.whispwriting.universes.utils.sql.SQL;
 import net.whispwriting.universes.utils.sql.SQLResult;
+import net.whispwriting.universes.utils.sql.SQLite;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,16 +34,23 @@ public class ConvertCommand implements CommandExecutor {
     private Serializer serializer;
     private SQL sql;
 
-    public ConvertCommand(Universes plugin, SQL sql){
+    public ConvertCommand(Universes plugin){
         this.plugin = plugin;
+
+        DatabaseFile databaseFile = new DatabaseFile(plugin);
+        boolean useRemote = databaseFile.get().getBoolean("remote-database");
+        if (useRemote)
+            sql = new MySQL(databaseFile);
+        else
+            sql = new SQLite(plugin);
+
         serializerOld = new SerializerOld(plugin, sql);
         serializer = new Serializer(plugin);
-        this.sql = sql;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        WorldLoaderOld.loadWorlds(plugin);
+        WorldLoaderOld.loadWorlds(plugin, sql);
         if (sender.hasPermission("Universes.convert")) {
             for (Map.Entry<String, Universe> universeEntry : plugin.universes.entrySet()){
                 Universe universe = universeEntry.getValue();
@@ -99,6 +108,7 @@ public class ConvertCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.GOLD + "Converting groups.yml");
                     plugin.groupsFile.update(sender);
                     sender.sendMessage(ChatColor.GREEN + "conversion complete");
+                    sql.close();
                 }
 
                 private void itemStore(ItemStack[] inventory, String type, OfflinePlayer player, String world){

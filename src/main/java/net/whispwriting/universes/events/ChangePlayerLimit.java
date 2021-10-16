@@ -48,8 +48,7 @@ public class ChangePlayerLimit implements Listener {
                 return;
             }
             universeToModify.setMaxPlayers(newLimit);
-            plugin.sql.query("update universe set maxPlayers=" + newLimit + " where name='" +
-                    universeToModify.serverWorld().getName() + "'", "update");
+            universeToModify.save();
             event.getPlayer().sendMessage(Utils.chat("&2playerLimit has been updated."));
             HandlerList.unregisterAll(ChangePlayerLimit.this);
         }catch(NumberFormatException e){

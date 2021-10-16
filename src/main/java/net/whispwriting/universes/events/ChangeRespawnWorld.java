@@ -47,8 +47,7 @@ public class ChangeRespawnWorld implements Listener {
             return;
         }
         universeToModfy.setRespawnWorld(universe.serverWorld().getName());
-        plugin.sql.query("update universe set respawnWorld='" + universe.serverWorld().getName() + "' where name='" +
-                universeToModfy.serverWorld().getName() + "'", "update");
+        universeToModfy.save();
         event.getPlayer().sendMessage(Utils.chat("&2respawnWorld has been updated."));
         HandlerList.unregisterAll(ChangeRespawnWorld.this);
     }
