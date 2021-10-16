@@ -1,28 +1,23 @@
 package net.whispwriting.universes.commands;
 
-import com.google.gson.JsonObject;
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.ConfigFile;
-import net.whispwriting.universes.files.GroupsFile;
-import net.whispwriting.universes.files.WorldSettingsFile;
+import net.whispwriting.universes.utils.WorldBuilderHelper;
 import net.whispwriting.universes.utils.WorldLoader;
 import net.whispwriting.universes.utils.generation.UniversesGenerator;
-import net.whispwriting.universes.utils.Universe;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CreateCommand implements CommandExecutor {
 
     private Universes plugin;
+    private WorldBuilderHelper helper;
 
     public CreateCommand(Universes pl){
         plugin = pl;
+        helper = new WorldBuilderHelper();
     }
 
     @Override
@@ -39,7 +34,7 @@ public class CreateCommand implements CommandExecutor {
             }
             sender.sendMessage(ChatColor.GREEN + "Starting creation of world " + ChatColor.DARK_GREEN + args[0]);
             UniversesGenerator universesGenerator = new UniversesGenerator(plugin, args[0]);
-            World world = makeWorld(args[1], universesGenerator, sender, args);
+            World world = helper.makeWorld(args[1], universesGenerator, sender, args);
             Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
             boolean hasUNehters = false;
             boolean hasEnds = false;
@@ -54,7 +49,7 @@ public class CreateCommand implements CommandExecutor {
                     if (Universes.plugin.netherPerOverworld) {
                         sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding nether");
                         UniversesGenerator universesGeneratorNether = new UniversesGenerator(plugin, args[0] + "_nether");
-                        makeWorld("nether", universesGeneratorNether, sender, args);
+                        helper.makeWorld("nether", universesGeneratorNether, sender, args);
                     }
                 }
             }
@@ -63,7 +58,7 @@ public class CreateCommand implements CommandExecutor {
                     if (Universes.plugin.endPerOverworld) {
                         sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding end");
                         UniversesGenerator universesGeneratorEnd = new UniversesGenerator(plugin, args[0] + "_the_end");
-                        makeWorld("end", universesGeneratorEnd, sender, args);
+                        helper.makeWorld("end", universesGeneratorEnd, sender, args);
                     }
                 }
             }
@@ -73,16 +68,5 @@ public class CreateCommand implements CommandExecutor {
         }
 
         return true;
-    }
-
-    private World makeWorld(String environment, UniversesGenerator universesGenerator, CommandSender sender, String[] args){
-        if (args.length == 5)
-            return WorldLoader.constructWorld(universesGenerator, sender, environment, args[2], args[3], args[4], null, null);
-        else if (args.length == 6)
-            return WorldLoader.constructWorld(universesGenerator, sender, environment, args[2], args[3], args[4], args[5], null);
-        else if (args.length == 7)
-            return WorldLoader.constructWorld(universesGenerator, sender, environment, args[2], args[3], args[4], args[5], args[6]);
-        else
-            return WorldLoader.constructWorld(universesGenerator, sender, environment, args[2], args[3], null, null, null);
     }
 }

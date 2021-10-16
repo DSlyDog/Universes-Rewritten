@@ -1,27 +1,23 @@
 package net.whispwriting.universes.commands;
 
-import com.google.gson.JsonObject;
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.GroupsFile;
-import net.whispwriting.universes.files.WorldSettingsFile;
-import net.whispwriting.universes.utils.WorldLoader;
+import net.whispwriting.universes.utils.WorldBuilderHelper;
 import net.whispwriting.universes.utils.generation.UniversesGenerator;
-import net.whispwriting.universes.utils.Universe;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ImportCommand implements CommandExecutor {
 
     private Universes plugin;
+    private WorldBuilderHelper helper;
 
     public ImportCommand(Universes pl){
         plugin = pl;
+        helper = new WorldBuilderHelper();
     }
 
     @Override
@@ -38,14 +34,7 @@ public class ImportCommand implements CommandExecutor {
                 if (datFile.exists() || uidFile.exists()){
                     sender.sendMessage(ChatColor.GREEN + "Starting import of world " + ChatColor.DARK_GREEN + args[0]);
                     UniversesGenerator universesGenerator = new UniversesGenerator(plugin, args[0]);
-                    if (args.length == 5)
-                        WorldLoader.constructWorld(universesGenerator, sender, args[1], args[2], args[3], args[4], null, null);
-                    else if (args.length == 6)
-                        WorldLoader.constructWorld(universesGenerator, sender, args[1], args[2], args[3], args[4], args[5], null);
-                    else if (args.length == 7)
-                        WorldLoader.constructWorld(universesGenerator, sender, args[1], args[2], args[3], args[4], args[5], args[6]);
-                    else
-                        WorldLoader.constructWorld(universesGenerator, sender, args[1], args[2], args[3], null, null, null);
+                    helper.makeWorld(args[1], universesGenerator, sender, args);
                     return true;
                 }else{
                     sender.sendMessage(ChatColor.RED + "That is not a valid Minecraft Java Edition world.");

@@ -133,13 +133,8 @@ public class WorldLoader {
             worldSettings.setDefaults(world, environment, generator);
             worldSettings.save();
             world.setDifficulty(getDifficulty(difficulty, sender));
-            if (group == null) {
+            if (group.equals(""))
                 group = world.getName();
-                if (Universes.plugin.inventoryGrouping)
-                    sender.sendMessage("Grouping is enabled but " + world.getName() + " does not " +
-                            "appear to have an associated group in the groups.yml. To prevent errors, the world name has " +
-                            "been assigned as its group. You should consider adding this world to the groups.yml");
-            }
             List<String> groupList = Universes.plugin.groupsFile.get().getStringList(group);
             groupList.add(world.getName());
             Universes.plugin.groupsFile.get().set(group, groupList);
