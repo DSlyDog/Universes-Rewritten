@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class UniversePlayer {
 
@@ -29,6 +30,7 @@ public class UniversePlayer {
     private Map<String, ItemStack[]> enderchests = new HashMap<>();
     private JsonObject stats = new JsonObject();
     private JsonObject previousLocations = new JsonObject();
+    private JsonObject bedSpawns = new JsonObject();
 
     public UniversePlayer(UUID uuid, Player player, Universes plugin){
         this.uuid = uuid;
@@ -182,11 +184,64 @@ public class UniversePlayer {
     }
 
     public void storePreviousLocations(){
-        parser.storePreviousLocations(previousLocations, uuid);
+        parser.storeLocations(previousLocations, uuid, "previousLocations");
     }
 
     public void buildPreviousLocations(){
-        previousLocations = parser.buildPreviousLocations(uuid);
+        previousLocations = parser.buildLocations(uuid, "previousLocations");
+    }
+
+    public void saveBedLocation(Universe universe, Location location){
+        JsonObject newLocation = new JsonObject();
+        newLocation.addProperty("world", location.getWorld().getName());
+        newLocation.addProperty("x", location.getX());
+        newLocation.addProperty("y", location.getY());
+        newLocation.addProperty("z", location.getZ());
+        newLocation.addProperty("yaw", location.getYaw());
+        newLocation.addProperty("pitch", location.getPitch());
+
+        JsonObject bedSpawn;
+        if (Universes.plugin.perWorldBedRespawn)
+            bedSpawn = bedSpawns.getAsJsonObject(universe.name());
+        else
+            bedSpawn = bedSpawns.getAsJsonObject(universe.serverWorld().getName());
+        if (bedSpawn == null) {
+            if (Universes.plugin.perWorldBedRespawn)
+                bedSpawns.add(universe.name(), newLocation);
+            else
+                bedSpawns.add(universe.serverWorld().getName(), newLocation);
+        }else {
+            bedSpawns.remove(universe.name());
+            bedSpawns.add(universe.name(), newLocation);
+        }
+    }
+
+    public Location loadBedLocation(Universe universe){
+        //System.out.println(bedSpawns);
+        JsonObject bedSpawn;
+        if (Universes.plugin.perWorldBedRespawn)
+            bedSpawn = bedSpawns.getAsJsonObject(universe.name());
+        else
+            bedSpawn = bedSpawns.getAsJsonObject(universe.serverWorld().getName());
+        if (bedSpawn != null){
+            String world = bedSpawn.get("world").getAsString();
+            double x = bedSpawn.get("x").getAsDouble();
+            double y = bedSpawn.get("y").getAsDouble();
+            double z = bedSpawn.get("z").getAsDouble();
+            float yaw = bedSpawn.get("yaw").getAsFloat();
+            float pitch = bedSpawn.get("pitch").getAsFloat();
+            return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+        }else{
+            return null;
+        }
+    }
+
+    public void storeBedLocations(){
+        parser.storeLocations(bedSpawns, uuid, "bedSpawns");
+    }
+
+    public void buildBedLocations(){
+        bedSpawns = parser.buildLocations(uuid, "bedSpawns");
     }
 
     public void setPreviousLocations(JsonObject previousLocations){
@@ -194,10 +249,19 @@ public class UniversePlayer {
     }
 
     public void buildBalances(){
-        for (World world : Bukkit.getWorlds()){
-            PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), world.getName());
-            Universes.econ.createPlayerAccount(player, world.getName());
-            Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
+        if (Universes.plugin.inventoryGrouping) {
+            for (Map.Entry<String, String> group : Universes.plugin.groups.entrySet()) {
+                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), group.getValue());
+                Universes.econ.createPlayerAccount(player, group.getValue());
+                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
+                //Bukkit.getLogger().log(Level.INFO, group.getValue() + ": " + account.get().getDouble("balance"));
+            }
+        }else {
+            for (World world : Bukkit.getWorlds()) {
+                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), world.getName());
+                Universes.econ.createPlayerAccount(player, world.getName());
+                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
+            }
         }
     }
 }

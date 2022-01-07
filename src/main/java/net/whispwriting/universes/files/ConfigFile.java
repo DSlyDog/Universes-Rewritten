@@ -28,10 +28,13 @@ public class ConfigFile extends AbstractFile{
         Universes.plugin.netherPerOverworld = true;
         Universes.plugin.toEntryPortal = false;
         Universes.plugin.endPerOverworld = true;
+        Universes.plugin.othersControlLeaveEnd = false;
         Universes.plugin.toGroupOnRespawn = true;
         Universes.plugin.usePerWorldTeleportPermissions = false;
         Universes.plugin.perWorldKitGrouping = false;
         Universes.plugin.returnToPreviousLocation = false;
+        Universes.plugin.useBedRespawn = false;
+        Universes.plugin.perWorldBedRespawn = false;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class ConfigFile extends AbstractFile{
                     "#Version is simply the current plugin version. This is used by the plugin primarily\n" +
                     "#for updating configuration files when a new version has been installed. For example,\n" +
                     "#it was used to rewrite the config.yml file with these comments in Universes 5.0.\n" +
-                    "version: \"5.0\"" +
+                    "version: \"5.0-beta1\"" +
                     "\n" +
                     "\n" +
                     "#Per-world-inventories is exactly what it says. Turning this option on will\n" +
@@ -194,6 +197,13 @@ public class ConfigFile extends AbstractFile{
                     "end-per-overworld: " + Universes.plugin.endPerOverworld +
                     "\n" +
                     "\n" +
+                    "#Let-other-plugin-control-leaving-end is a toggle that will allow other plugins to control what\n" +
+                    "#happens when a player leaves the end. The end exit portal triggers a respawn event. This toggle can\n" +
+                    "#be used to allow Universe-Spawnify to control what happens or other third party plugins like Essentials\n" +
+                    "#This is false by default.\n" +
+                    "let-other-plugin-control-leaving-end: " + Universes.plugin.othersControlLeaveEnd +
+                    "\n" +
+                    "\n" +
                     "#  ---------------------------------------------------------------------------------------------\n" +
                     "# |   _    _       _                            _____                            _  __          |\n" +
                     "# |  | |  | |     (_)                          / ____|                          (_)/ _|         |\n" +
@@ -217,7 +227,20 @@ public class ConfigFile extends AbstractFile{
                     "\n" +
                     "#Respawn-at-group-spawn is also exactly what it says. When enabled, players will be spawned at the\n" +
                     "#group spawnpoint for the group they are in when they die. This is true by default.\n" +
-                    "respawn-at-group-spawn: " + Universes.plugin.toGroupOnRespawn);
+                    "respawn-at-group-spawn: " + Universes.plugin.toGroupOnRespawn +
+                    "\n" +
+                    "\n" +
+                    "#Use-bed-respawn will have the player respawn at their bed or respawn anchor if it is set. If a \n" +
+                    "#respawn point has not been set, the plugin will look to respawn-at-group-spawn. \n" +
+                    "#This is false by default\n" +
+                    "use-bed-respawn: " + Universes.plugin.useBedRespawn +
+                    "\n" +
+                    "\n" +
+                    "#Per-world-bed-spawns will allow each world to have its own bed or respawn anchor spawn point. If\n" +
+                    "#per-world-inventory-grouping is enabled, this will automatically use the groups. Use-bed-respawn\n" +
+                    "#must be enabled for this option to have an effect.\n" +
+                    "#This is false by default.\n" +
+                    "per-world-bed-spawns: " + Universes.plugin.perWorldBedRespawn);
             writer.close();
         }catch(IOException e){
             Bukkit.getLogger().log(Level.WARNING, "[Universes] Failed to write comments to config file");

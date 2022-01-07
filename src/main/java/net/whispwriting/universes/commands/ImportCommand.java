@@ -2,6 +2,7 @@ package net.whispwriting.universes.commands;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.utils.WorldBuilderHelper;
+import net.whispwriting.universes.utils.WorldLoadEventHelper;
 import net.whispwriting.universes.utils.generation.UniversesGenerator;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -34,6 +35,7 @@ public class ImportCommand implements CommandExecutor {
                 if (datFile.exists() || uidFile.exists()){
                     sender.sendMessage(ChatColor.GREEN + "Starting import of world " + ChatColor.DARK_GREEN + args[0]);
                     UniversesGenerator universesGenerator = new UniversesGenerator(plugin, args[0]);
+                    WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
                     helper.makeWorld(args[1], universesGenerator, sender, args);
                     return true;
                 }else{

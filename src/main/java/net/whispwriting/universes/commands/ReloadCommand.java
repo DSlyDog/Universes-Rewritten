@@ -41,6 +41,8 @@ public class ReloadCommand implements CommandExecutor {
         plugin.worldEntryPermissions = plugin.config.get().getBoolean("world-entry-permissions");
         plugin.hubOnJoin = plugin.config.get().getBoolean("rejoin-at-hub");
         plugin.toGroupOnRespawn = plugin.config.get().getBoolean("respawn-at-group-spawn");
+        plugin.useBedRespawn = plugin.config.get().getBoolean("use-bed-respawn");
+        plugin.perWorldBedRespawn = plugin.config.get().getBoolean("per-world-bed-spawns");
         plugin.usePerWorldTeleportPermissions = plugin.config.get().getBoolean("use-per-world-teleport-permissions");
         plugin.returnToPreviousLocation = plugin.config.get().getBoolean("return-to-previous-locations");
         plugin.useEconomy = plugin.economyFile.get().getBoolean("use-universes-economy");
@@ -50,6 +52,7 @@ public class ReloadCommand implements CommandExecutor {
         plugin.netherPerOverworld = plugin.economyFile.get().getBoolean("nether-per-overworld");
         plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
         plugin.endPerOverworld = plugin.config.get().getBoolean("end-per-overworld");
+        plugin.othersControlLeaveEnd = plugin.config.get().getBoolean("let-other-plugin-control-leaving-end");
         WorldLoader.loadWorlds(plugin);
         plugin.setupEconomy();
         sender.sendMessage(ChatColor.GREEN + "reloaded config.");

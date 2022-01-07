@@ -24,7 +24,7 @@ public class PlayerChangeWorld implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onWorldChange(PlayerChangedWorldEvent event){
         Universe universe = plugin.universes.get(event.getPlayer().getWorld().getName());
         Universe fromUniverse = plugin.universes.get(event.getFrom().getName());

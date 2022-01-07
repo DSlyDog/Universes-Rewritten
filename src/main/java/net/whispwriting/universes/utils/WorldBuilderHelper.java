@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import java.util.logging.Level;
+
 public class WorldBuilderHelper {
 
     private String seed = "";

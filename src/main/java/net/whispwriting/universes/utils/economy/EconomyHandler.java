@@ -11,6 +11,8 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public class EconomyHandler implements Economy {
 
@@ -56,7 +58,7 @@ public class EconomyHandler implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        checkCurrentWorld();
+        checkCurrentWorld(Bukkit.getPlayer(playerName));
 
         if (!players.containsKey(currentWorld))
             return false;
@@ -84,7 +86,7 @@ public class EconomyHandler implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        checkCurrentWorld();
+        checkCurrentWorld(Bukkit.getPlayer(playerName));
         return players.get(currentWorld).get(playerName).getBalance();
     }
 
@@ -100,14 +102,14 @@ public class EconomyHandler implements Economy {
     }
 
     @Override
-    public double getBalance(OfflinePlayer offlinePlayer, String s) {
-        this.currentWorld = s;
+    public double getBalance(OfflinePlayer offlinePlayer, String world) {
+        this.currentWorld = world;
         return getBalance(offlinePlayer);
     }
 
     @Override
     public boolean has(String playerName, double amount) {
-        checkCurrentWorld();
+        checkCurrentWorld(Bukkit.getPlayer(playerName));
         EconomyPlayer player = players.get(currentWorld).get(playerName);
         return player.canWithdraw(amount);
     }
@@ -125,14 +127,14 @@ public class EconomyHandler implements Economy {
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, String worldName, double amount) {
-        this.currentWorld = worldName;
+        this.currentWorld = worldName;;
         return has(offlinePlayer, amount);
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(String playername, double amount) {
-        checkCurrentWorld();
-        EconomyPlayer player = players.get(currentWorld).get(playername);
+    public EconomyResponse withdrawPlayer(String playerName, double amount) {
+        checkCurrentWorld(Bukkit.getPlayer(playerName));
+        EconomyPlayer player = players.get(currentWorld).get(playerName);
         if (player.canWithdraw(amount)) {
             return player.withdraw(amount);
         } else {
@@ -143,7 +145,7 @@ public class EconomyHandler implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
-        checkCurrentWorld();
+        checkCurrentWorld(offlinePlayer);
         EconomyPlayer player = players.get(currentWorld).get(offlinePlayer.getName());
         if (player.canWithdraw(amount)) {
             return player.withdraw(amount);
@@ -167,13 +169,14 @@ public class EconomyHandler implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        checkCurrentWorld();
         return players.get(currentWorld).get(playerName).deposit(amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
-        checkCurrentWorld();
+        Bukkit.getLogger().log(Level.INFO, "current world (dP): " + currentWorld);
+        checkCurrentWorld(offlinePlayer);
+        Bukkit.getLogger().log(Level.INFO, "current world (dP): " + currentWorld);
         return players.get(currentWorld).get(offlinePlayer.getName()).deposit(amount);
     }
 
@@ -185,7 +188,6 @@ public class EconomyHandler implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String worldName, double amount) {
-        this.currentWorld = worldName;
         return depositPlayer(offlinePlayer, amount);
     }
 
@@ -269,8 +271,9 @@ public class EconomyHandler implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        checkCurrentWorld();
-
+        Bukkit.getLogger().log(Level.INFO, "current world (cPA): " + currentWorld);
+        checkCurrentWorld(Bukkit.getPlayer(playerName));
+        Bukkit.getLogger().log(Level.INFO, "current world (cPA): " + currentWorld);
         if (!players.containsKey(currentWorld)){
             Map<String, EconomyPlayer> accounts = new HashMap<>();
             accounts.put(playerName, new EconomyPlayer(playerName, currentWorld));
@@ -298,15 +301,20 @@ public class EconomyHandler implements Economy {
         return createPlayerAccount(offlinePlayer);
     }
 
-    public void checkCurrentWorld(){
+    public void checkCurrentWorld(OfflinePlayer player){
         if (currentWorld == null) {
             if (Universes.plugin.inventoryGrouping)
-                currentWorld = Universes.plugin.groups.get(Bukkit.getWorlds().get(0).getName());
+                currentWorld = Universes.plugin.groups.get(player.getPlayer().getLocation().getWorld().getName());
             else
-                currentWorld = Bukkit.getWorlds().get(0).getName();
+                currentWorld = player.getPlayer().getLocation().getWorld().getName();
         }else{
             if (Universes.plugin.inventoryGrouping)
-                currentWorld = Universes.plugin.groups.get(currentWorld);
+                if (Universes.plugin.groups.containsKey(currentWorld))
+                    currentWorld = Universes.plugin.groups.get(currentWorld);
+                else if (Universes.plugin.groups.containsValue(currentWorld))
+                    return;
+                else
+                    currentWorld = Universes.plugin.groups.get(player.getPlayer().getLocation().getWorld().getName());
         }
     }
 }

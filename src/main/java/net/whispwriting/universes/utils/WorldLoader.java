@@ -117,14 +117,10 @@ public class WorldLoader {
         universesGenerator.setEnvironment(getEnvironment(environment, sender));
         universesGenerator.generateStructures(true);
         universesGenerator.setType(getWorldType(type, sender));
-        if (seedString != null) {
-            try {
-                universesGenerator.setSeed(Long.parseLong(seedString));
-            }catch(NumberFormatException e){
-                universesGenerator.setGenerator(seedString);
-            }
+        if (!seedString.equals("")) {
+            universesGenerator.setSeed(Long.parseLong(seedString));
         }
-        if (generator != null)
+        if (!generator.equals(""))
             universesGenerator.setGenerator(generator);
         universesGenerator.createWorld();
         World world = universesGenerator.getWorld();

@@ -2,6 +2,7 @@ package net.whispwriting.universes.commands;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.utils.WorldBuilderHelper;
+import net.whispwriting.universes.utils.WorldLoadEventHelper;
 import net.whispwriting.universes.utils.WorldLoader;
 import net.whispwriting.universes.utils.generation.UniversesGenerator;
 import org.bukkit.*;
@@ -34,6 +35,7 @@ public class CreateCommand implements CommandExecutor {
             }
             sender.sendMessage(ChatColor.GREEN + "Starting creation of world " + ChatColor.DARK_GREEN + args[0]);
             UniversesGenerator universesGenerator = new UniversesGenerator(plugin, args[0]);
+            WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
             World world = helper.makeWorld(args[1], universesGenerator, sender, args);
             Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
             boolean hasUNehters = false;
@@ -49,6 +51,7 @@ public class CreateCommand implements CommandExecutor {
                     if (Universes.plugin.netherPerOverworld) {
                         sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding nether");
                         UniversesGenerator universesGeneratorNether = new UniversesGenerator(plugin, args[0] + "_nether");
+                        WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
                         helper.makeWorld("nether", universesGeneratorNether, sender, args);
                     }
                 }
@@ -58,6 +61,7 @@ public class CreateCommand implements CommandExecutor {
                     if (Universes.plugin.endPerOverworld) {
                         sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding end");
                         UniversesGenerator universesGeneratorEnd = new UniversesGenerator(plugin, args[0] + "_the_end");
+                        WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
                         helper.makeWorld("end", universesGeneratorEnd, sender, args);
                     }
                 }

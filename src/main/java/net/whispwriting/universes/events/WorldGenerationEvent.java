@@ -5,6 +5,7 @@ import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.GroupsFile;
 import net.whispwriting.universes.files.WorldSettingsFile;
 import net.whispwriting.universes.utils.Universe;
+import net.whispwriting.universes.utils.WorldLoadEventHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -26,6 +27,10 @@ public class WorldGenerationEvent implements Listener {
 
     @EventHandler
     public void onWorldGen(WorldLoadEvent event){
+        if (WorldLoadEventHelper.getInstance().isCreateCommandExecuted()){
+            WorldLoadEventHelper.getInstance().setCreateCommandExecuted(false);
+            return;
+        }
         World world = event.getWorld();
         if (!plugin.universes.containsKey(world.getName()) && plugin.startupComplete) {
             String name = world.getName();

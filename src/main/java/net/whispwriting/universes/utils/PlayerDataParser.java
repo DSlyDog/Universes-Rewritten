@@ -32,15 +32,15 @@ public class PlayerDataParser {
         dataFile.save();
     }
 
-    public void storePreviousLocations(JsonObject previousLocations, UUID uuid){
+    public void storeLocations(JsonObject previousLocations, UUID uuid, String locationType){
         PlayerDataFile playerDataFile = new PlayerDataFile(Universes.plugin, uuid.toString());
-        playerDataFile.get().set("previousLocations", previousLocations.toString());
+        playerDataFile.get().set(locationType, previousLocations.toString());
         playerDataFile.save();
     }
 
-    public JsonObject buildPreviousLocations(UUID uuid){
+    public JsonObject buildLocations(UUID uuid, String locationType){
         PlayerDataFile playerDataFile = new PlayerDataFile(Universes.plugin, uuid.toString());
-        String json = playerDataFile.get().getString("previousLocations");
+        String json = playerDataFile.get().getString(locationType);
         if (json != null) {
             JsonParser parser = new JsonParser();
             return parser.parse(json).getAsJsonObject();

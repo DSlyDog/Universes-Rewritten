@@ -39,8 +39,11 @@ public final class Universes extends JavaPlugin {
     public boolean hubOnJoin;
     public boolean netherPerOverworld;
     public boolean endPerOverworld;
+    public boolean othersControlLeaveEnd;
     public boolean toEntryPortal;
     public boolean toGroupOnRespawn;
+    public boolean useBedRespawn;
+    public boolean perWorldBedRespawn;
     public boolean startupComplete;
     public boolean usePerWorldTeleportPermissions;
     public boolean perWorldKitGrouping;
@@ -90,6 +93,14 @@ public final class Universes extends JavaPlugin {
             uPlayer.buildPreviousLocations();
             onlinePlayers.put(name, uPlayer);
             universes.get(world).incrementPlayerCount();
+            if (useEconomy) {
+                if (econ != null)
+                    uPlayer.buildBalances();
+            }
+            if (Bukkit.getPluginManager().getPlugin("Universe-Spawnify") != null){
+                uPlayer.buildBedLocations();
+                player.setBedSpawnLocation(uPlayer.loadBedLocation(universes.get(world)));
+            }
         }
     }
 
@@ -115,7 +126,10 @@ public final class Universes extends JavaPlugin {
         netherPerOverworld = config.get().getBoolean("nether-per-overworld");
         toEntryPortal = config.get().getBoolean("return-to-entry-portal");
         endPerOverworld = config.get().getBoolean("end-per-overworld");
+        othersControlLeaveEnd = config.get().getBoolean("let-other-plugin-control-leaving-end");
         toGroupOnRespawn = config.get().getBoolean("respawn-at-group-spawn");
+        useBedRespawn = config.get().getBoolean("use-bed-respawn");
+        perWorldBedRespawn = config.get().getBoolean("per-world-bed-spawns");
         usePerWorldTeleportPermissions = config.get().getBoolean("use-per-world-teleport-permissions");
         perWorldKitGrouping = config.get().getBoolean("per-world-kit-grouping");
         returnToPreviousLocation = config.get().getBoolean("return-to-previous-locations");
@@ -156,5 +170,9 @@ public final class Universes extends JavaPlugin {
         }
         econ = rsp.getProvider();
         return econ != null;
+    }
+
+    public void updateInstanceVariable(){
+        plugin = this;
     }
 }
