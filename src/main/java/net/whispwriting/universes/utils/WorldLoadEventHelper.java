@@ -7,6 +7,7 @@ public class WorldLoadEventHelper {
     private WorldLoadEventHelper(){}
 
     private boolean createCommandExecuted = false;
+    private boolean convertCommandExecuted = false;
 
     public boolean isCreateCommandExecuted(){
         return createCommandExecuted;
@@ -14,6 +15,14 @@ public class WorldLoadEventHelper {
 
     public void setCreateCommandExecuted(boolean value){
         createCommandExecuted = value;
+    }
+
+    public boolean isConvertCommandExecuted() {
+        return convertCommandExecuted;
+    }
+
+    public void setConvertCommandExecuted(boolean value){
+        convertCommandExecuted = value;
     }
 
     public static WorldLoadEventHelper getInstance(){

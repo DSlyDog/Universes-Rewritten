@@ -53,6 +53,7 @@ public class WorldLoader {
             plugin.universes.put(world.getName(), universe);
         }
         GroupsFile groups = new GroupsFile(plugin);
+
         groups.setDefaults();
         groups.save();
 

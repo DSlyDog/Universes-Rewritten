@@ -49,20 +49,24 @@ public class CreateCommand implements CommandExecutor {
             if (hasUNehters){
                 if (world.getEnvironment() == World.Environment.NORMAL) {
                     if (Universes.plugin.netherPerOverworld) {
-                        sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding nether");
-                        UniversesGenerator universesGeneratorNether = new UniversesGenerator(plugin, args[0] + "_nether");
-                        WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
-                        helper.makeWorld("nether", universesGeneratorNether, sender, args);
+                        if (Bukkit.getWorld(args[0] + "_nether") == null) {
+                            sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding nether");
+                            UniversesGenerator universesGeneratorNether = new UniversesGenerator(plugin, args[0] + "_nether");
+                            WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
+                            helper.makeWorld("nether", universesGeneratorNether, sender, args);
+                        }
                     }
                 }
             }
             if (hasEnds){
                 if (world.getEnvironment() == World.Environment.NORMAL) {
                     if (Universes.plugin.endPerOverworld) {
-                        sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding end");
-                        UniversesGenerator universesGeneratorEnd = new UniversesGenerator(plugin, args[0] + "_the_end");
-                        WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
-                        helper.makeWorld("end", universesGeneratorEnd, sender, args);
+                        if (Bukkit.getWorld(args[0] + "_the_end") == null) {
+                            sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding end");
+                            UniversesGenerator universesGeneratorEnd = new UniversesGenerator(plugin, args[0] + "_the_end");
+                            WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
+                            helper.makeWorld("end", universesGeneratorEnd, sender, args);
+                        }
                     }
                 }
             }

@@ -22,6 +22,9 @@ public class GroupsFile extends AbstractFile{
     }
 
     public void setDefaults(){
+        if (file.length() > 0)
+            return;
+
         World world = Bukkit.getWorlds().get(0);
         List<String> defaultGroup = new ArrayList<>();
         defaultGroup.add(world.getName());
@@ -35,9 +38,11 @@ public class GroupsFile extends AbstractFile{
         for (World world : Bukkit.getWorlds()){
             String group = config.getString(world.getName()+".group");
             if (group == null){
+                sender.sendMessage(world.getName() + "'s group was null");
                 catastroiphicFailure(sender, 1);
                 return;
             }
+            sender.sendMessage(world.getName() + "'s group is " + group);
             if (groups.containsKey(group)){
                 groups.get(group).add(world.getName());
             }else{
@@ -63,7 +68,6 @@ public class GroupsFile extends AbstractFile{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void catastroiphicFailure(CommandSender sender, int messageNumber){

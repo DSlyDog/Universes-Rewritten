@@ -4,10 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.*;
-import net.whispwriting.universes.utils.Serializer;
-import net.whispwriting.universes.utils.SerializerOld;
-import net.whispwriting.universes.utils.Universe;
-import net.whispwriting.universes.utils.WorldLoaderOld;
+import net.whispwriting.universes.utils.*;
 import net.whispwriting.universes.utils.sql.MySQL;
 import net.whispwriting.universes.utils.sql.SQL;
 import net.whispwriting.universes.utils.sql.SQLResult;
@@ -50,6 +47,7 @@ public class ConvertCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        WorldLoadEventHelper.getInstance().setConvertCommandExecuted(true);
         WorldLoaderOld.loadWorlds(plugin, sql);
         if (sender.hasPermission("Universes.convert")) {
             for (Map.Entry<String, Universe> universeEntry : plugin.universes.entrySet()){
@@ -107,6 +105,7 @@ public class ConvertCommand implements CommandExecutor {
                     }
                     sender.sendMessage(ChatColor.GOLD + "Converting groups.yml");
                     plugin.groupsFile.update(sender);
+                    WorldLoadEventHelper.getInstance().setConvertCommandExecuted(false);
                     sender.sendMessage(ChatColor.GREEN + "conversion complete");
                     sql.close();
                 }

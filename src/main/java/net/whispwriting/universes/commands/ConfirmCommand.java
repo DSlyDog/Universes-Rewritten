@@ -49,6 +49,7 @@ public class ConfirmCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.GREEN + "World deleted.");
                 plugin.universes.remove(worldName);
                 plugin.players.remove(p);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
                 return true;
             }
         }
@@ -58,14 +59,18 @@ public class ConfirmCommand implements CommandExecutor {
 
     private void removeFromGroups(World world){
         String groupName = Universes.plugin.groups.get(world.getName());
-        List<String> group = Universes.plugin.groupsFile.get().getStringList(groupName);
+        List<String> group;
+        try {
+            group = Universes.plugin.groupsFile.get().getStringList(groupName);
+        }catch(IllegalArgumentException e){
+            return;
+        }
         group.remove(world.getName());
         if (group.size() == 0)
             Universes.plugin.groupsFile.get().set(groupName, null);
         else
             Universes.plugin.groupsFile.get().set(groupName, group);
         Universes.plugin.groupsFile.save();
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ur");
     }
 
     private void deleteFolderContents(File directory){

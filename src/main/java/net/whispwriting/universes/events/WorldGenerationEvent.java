@@ -31,6 +31,9 @@ public class WorldGenerationEvent implements Listener {
             WorldLoadEventHelper.getInstance().setCreateCommandExecuted(false);
             return;
         }
+        if (WorldLoadEventHelper.getInstance().isConvertCommandExecuted())
+            return;
+
         World world = event.getWorld();
         if (!plugin.universes.containsKey(world.getName()) && plugin.startupComplete) {
             String name = world.getName();

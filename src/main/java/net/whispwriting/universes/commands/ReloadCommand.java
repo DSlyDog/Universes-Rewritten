@@ -49,7 +49,7 @@ public class ReloadCommand implements CommandExecutor {
         plugin.currencySingular = plugin.economyFile.get().getString("currency-name-singular");
         plugin.currencyPlural = plugin.economyFile.get().getString("currency-name-plural");
         plugin.currencyIndicator = plugin.economyFile.get().getString("currency-prefix");
-        plugin.netherPerOverworld = plugin.economyFile.get().getBoolean("nether-per-overworld");
+        plugin.netherPerOverworld = plugin.config.get().getBoolean("nether-per-overworld");
         plugin.toEntryPortal = plugin.config.get().getBoolean("return-to-entry-portal");
         plugin.endPerOverworld = plugin.config.get().getBoolean("end-per-overworld");
         plugin.othersControlLeaveEnd = plugin.config.get().getBoolean("let-other-plugin-control-leaving-end");
