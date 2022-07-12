@@ -6,6 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class HelpCommand implements CommandExecutor {
+    /**
+     * Command that lists all the commands with their descriptions
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         sender.sendMessage(ChatColor.GOLD + "---------- " + ChatColor.YELLOW + "Universes Help " + ChatColor.GOLD + "----------");

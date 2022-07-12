@@ -23,6 +23,14 @@ public class ConfirmCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Command to confirm an initiated world deletion
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("Universes.delete")){
@@ -57,6 +65,10 @@ public class ConfirmCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * Removes the given world from any groups it is in in the groups.yml
+     * @param world World that is being deleted
+     */
     private void removeFromGroups(World world){
         String groupName = Universes.plugin.groups.get(world.getName());
         List<String> group;
@@ -73,6 +85,10 @@ public class ConfirmCommand implements CommandExecutor {
         Universes.plugin.groupsFile.save();
     }
 
+    /**
+     * Deletes the contents of the given world's folder in the server files
+     * @param directory Directory for the world to delete
+     */
     private void deleteFolderContents(File directory){
         String[] files = directory.list();
         for (String f : files){

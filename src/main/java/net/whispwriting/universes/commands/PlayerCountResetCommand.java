@@ -21,6 +21,14 @@ public class PlayerCountResetCommand implements TabExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Command to reset the player count of a world when it bugs
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("Universes.resetplayercount")){

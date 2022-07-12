@@ -15,6 +15,14 @@ public class InfoCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Command that lists information on a world including player counts and settings
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("Universes.info")){

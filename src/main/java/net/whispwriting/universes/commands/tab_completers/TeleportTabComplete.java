@@ -11,6 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeleportTabComplete implements TabCompleter {
+
+    /**
+     *
+     * @param commandSender Source of the command.  For players tab-completing a
+     *     command inside of a command block, this will be the player, not
+     *     the command block.
+     * @param command Command which was executed
+     * @param s Alias of the command which was used
+     * @param strings The arguments passed to the command, including final
+     *     partial argument to be completed
+     * @return worlds array or null
+     */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         List<String> worlds = new ArrayList<>();

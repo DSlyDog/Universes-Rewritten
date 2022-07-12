@@ -20,6 +20,14 @@ public class UnloadCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Command to unload a world and remove it from memory (usually to move the world files out of the server) without deleting any of the world's files
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("Universes.unload")){

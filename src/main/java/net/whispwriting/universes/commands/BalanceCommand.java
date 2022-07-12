@@ -8,6 +8,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BalanceCommand implements CommandExecutor {
+    /**
+     * Command to check available balance
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return true
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

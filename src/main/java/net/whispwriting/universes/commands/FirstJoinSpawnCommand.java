@@ -16,6 +16,14 @@ public class FirstJoinSpawnCommand implements CommandExecutor {
         this.spawnFile = spawnFile;
     }
 
+    /**
+     * Command to set a location for players to spawn at the first time they join the server
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)){

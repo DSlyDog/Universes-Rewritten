@@ -18,6 +18,14 @@ public class EconomyCommand implements CommandExecutor {
 
     private Player executor;
 
+    /**
+     * Administrative command for manipulating player balances and banks
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -69,6 +77,11 @@ public class EconomyCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * Give money to a player
+     * @param name Name of the player
+     * @param balance Amount to give
+     */
     private void giveMoney(String name, double balance){
         Player player = Bukkit.getPlayer(name);
         String world = player.getWorld().getName();
@@ -81,6 +94,11 @@ public class EconomyCommand implements CommandExecutor {
         }
     }
 
+    /**
+     * Take money from a player
+     * @param name Name of the player
+     * @param balance Amount to remove
+     */
     private void takeMoney(String name, double balance){
         Player player = Bukkit.getPlayer(name);
         String world = player.getWorld().getName();
@@ -95,6 +113,11 @@ public class EconomyCommand implements CommandExecutor {
         }
     }
 
+    /**
+     * Set a player's balance to a specific amount
+     * @param name Name of the player
+     * @param amount The amount to set
+     */
     private void setMoney(String name, double amount){
         double balance = viewBalance(name);
         takeMoney(name, balance);
@@ -102,6 +125,11 @@ public class EconomyCommand implements CommandExecutor {
         executor.sendMessage(ChatColor.GREEN + name + " now has " + ChatColor.DARK_GREEN + Universes.econ.format(amount));
     }
 
+    /**
+     * View a player's current balance
+     * @param name Name of the player
+     * @return the player's balance or 0 if no account exists
+     */
     private double viewBalance(String name){
         Player player = Bukkit.getPlayer(name);
         String world = player.getWorld().getName();
@@ -113,6 +141,12 @@ public class EconomyCommand implements CommandExecutor {
         return 0;
     }
 
+    /**
+     * Check if a player has an account, create one if they do not
+     * @param player Player to check
+     * @param world World that the player is currently in
+     * @return
+     */
     private boolean hasAccount(Player player, String world){
         if (!Universes.econ.hasAccount(player, world)){
             Universes.econ.createPlayerAccount(player, world);

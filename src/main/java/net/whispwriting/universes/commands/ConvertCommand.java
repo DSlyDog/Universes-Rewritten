@@ -34,7 +34,7 @@ public class ConvertCommand implements CommandExecutor {
     public ConvertCommand(Universes plugin){
         this.plugin = plugin;
 
-        DatabaseFile databaseFile = new DatabaseFile(plugin);
+        DatabaseFile databaseFile = new DatabaseFile(plugin); //old file storage setup initialization to retrieve data
         boolean useRemote = databaseFile.get().getBoolean("remote-database");
         if (useRemote)
             sql = new MySQL(databaseFile);
@@ -45,12 +45,20 @@ public class ConvertCommand implements CommandExecutor {
         serializer = new Serializer(plugin);
     }
 
+    /**
+     * Command to convert stored data to the new configuration
+     * @param sender Source of the command
+     * @param command Command which was executed
+     * @param label Alias of the command which was used
+     * @param args Passed command arguments
+     * @return
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         WorldLoadEventHelper.getInstance().setConvertCommandExecuted(true);
         WorldLoaderOld.loadWorlds(plugin, sql);
         if (sender.hasPermission("Universes.convert")) {
-            for (Map.Entry<String, Universe> universeEntry : plugin.universes.entrySet()){
+            for (Map.Entry<String, Universe> universeEntry : plugin.universes.entrySet()){ //creating new world settings files for each world
                 Universe universe = universeEntry.getValue();
                 sender.sendMessage(ChatColor.GOLD + "Converting world settings for world " + ChatColor.YELLOW + universe.serverWorld().getName());
                 WorldSettingsFile worldSettingsFile = new WorldSettingsFile(plugin, universe.serverWorld().getName());
@@ -60,11 +68,12 @@ public class ConvertCommand implements CommandExecutor {
                 worldSettingsFile.save();
             }
 
+            //separate thread for the rest of the data conversion to prevent the server from thinking there is a hang and crashing
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     sender.sendMessage(ChatColor.GOLD + "Converting player inventories...");
-                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){ //converting inventory files for all players
                         sender.sendMessage(ChatColor.YELLOW + player.getName());
                         for (World world : Bukkit.getWorlds()){
                             ItemStack[] inventory = serializerOld.deserialize(player.getUniqueId(), player, world.getName(), "inventory");
@@ -75,7 +84,7 @@ public class ConvertCommand implements CommandExecutor {
                     }
 
                     sender.sendMessage(ChatColor.GOLD + "Converting player stats...");
-                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){ //converting player stats (health, hunger, etc.) for all players
                         JsonObject stats = serializerOld.parseStats(player.getUniqueId());
                         PlayerDataFile data = new PlayerDataFile(plugin, player.getUniqueId().toString());
                         if (stats != null) {
@@ -85,7 +94,7 @@ public class ConvertCommand implements CommandExecutor {
                     }
 
                     sender.sendMessage(ChatColor.GOLD + "Converting player settings files...");
-                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()){ //converting player settings for all players
                         sender.sendMessage(ChatColor.YELLOW + player.getName());
                         PlayerSettingsFileOld oldSettings = new PlayerSettingsFileOld(plugin, player.getUniqueId().toString());
                         boolean gameModeOverride = oldSettings.get().getBoolean("gameModeOverride");
@@ -110,12 +119,23 @@ public class ConvertCommand implements CommandExecutor {
                     sql.close();
                 }
 
+                /**
+                 * Serializes the given inventory to store in the new configuration
+                 * @param inventory The inventory to serialize
+                 * @param type Player inventory or ender chest inventory
+                 * @param player The player who owns the inventory
+                 * @param world The world the inventory is located in
+                 */
                 private void itemStore(ItemStack[] inventory, String type, OfflinePlayer player, String world){
                     if (inventory != null) {
                         serializer.serialize(inventory, type, player.getUniqueId(), world);
                     }
                 }
 
+                /**
+                 * Builds a json string from the database query to save in the new configuration
+                 * @param player The player whose previous locations should be hooked up
+                 */
                 public void buildPreviousLocations(OfflinePlayer player) {
                     SQLResult result = sql.query("select * from playerdata where uuid='" + player.getUniqueId() + "'", "query");
 

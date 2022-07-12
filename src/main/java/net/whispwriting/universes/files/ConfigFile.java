@@ -59,7 +59,7 @@ public class ConfigFile extends AbstractFile{
                     "#Version is simply the current plugin version. This is used by the plugin primarily\n" +
                     "#for updating configuration files when a new version has been installed. For example,\n" +
                     "#it was used to rewrite the config.yml file with these comments in Universes 5.0.\n" +
-                    "version: \"5.0-beta3\"" +
+                    "version: \"5.0-beta4\"" +
                     "\n" +
                     "\n" +
                     "#Per-world-inventories is exactly what it says. Turning this option on will\n" +

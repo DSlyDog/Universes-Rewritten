@@ -23,7 +23,7 @@ public class PortalEvent implements Listener {
         Universe universe = plugin.universes.get(event.getTo().getWorld().getName());
         PlayerSettingsFile playerSettings = new PlayerSettingsFile(plugin, event.getPlayer().getUniqueId().toString());
         boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
-        if (plugin.worldEntryPermissions){
+        if (plugin.worldEntryPermissions && !plugin.netherPerOverworld){
             if (!event.getPlayer().hasPermission("Universes.universe." + universe.serverWorld().getName())){
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(ChatColor.DARK_RED + "You do not have permission to enter that world");

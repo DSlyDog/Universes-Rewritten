@@ -1,0 +1,143 @@
+- remove lang, es, and en packages
+- relocated child packages to parent package
+- fixed import statements for relocation
+- removed commented out code related to language swapping
+- removed unused Spanish language setup code
+- removed all events related to teleportation and respawning
+- removed per world inventory system
+- removed per world stats system
+- added Universe class
+- added UniversePlayer class
+- added abstract SQL class
+- coded create method in SQL
+- coded insert method in SQL
+- coded update method in SQL
+- coded query method in SQL
+- created MySQL subclass
+- coded init method in MySQL
+- coded connect method in MySQL
+- created DatabaseConfig class/database-config.yml file for database related settings
+- added AbstractFileSQL class
+- added LocalDatabase subclass for creating a local database
+- created SQLite subclass
+- codes init method in SQLite
+- coded connect method in SQLite
+- create Serialize class
+- import itemToString from old Universes to Serialize
+- import stringToItem from old Universes to Serialize
+- code serialize method
+- code deserialize method
+- fixed small bug with switch statement in query method in SQL
+- SQL queries for inventory table implemented in Serialize
+- created onlinePlayers HashMap in Universes main class
+- Added PlayerChangeOnlineState class in place of JoinEvent to handle both joining and leaving
+- coded join and leave event handlers that build UniversePlayer objects
+- added player counter to Universe class
+- added blocked commands array
+- added methods in Universe class to add, remove, and check blocked commands
+- implemented Serializer in UniversePlayer
+- implemented SQL initialization in Universes main class
+- Fixed error in SQL syntax in SQL class
+- added check for existence of tables in database
+- added inventory map to UniversePlayer
+- renamed loadInventory() to storeInventory()
+- added loadInventory which searches map for inventories
+- created buildInventory() method in UniversePlayer
+- created PlayerChangedWorld event handler to load new world's inventory
+- added clearInventory() method in UniversePlayer
+- added PlayerTeleport event handler
+- added SaveInventoryTask to save inventories on timer
+- added SaveAll to save inventories in multiple threads
+- implemented PlayerTeleport and PlayerChangeWorld event handlers
+- fixed null player bug in PlayerTeleport and PlayerChangedWorld
+- fixed JSON parse on null results from query in deserialize() in Serializer
+- changed inventories map in UniversePlayer to store ItemStack arrays instead of Inventory objects
+- Renamed SaveAll to SaveInventoryThread
+- Adjusted SaveInventoryThread to save only current inventory
+- added call to storeInventory on player quit, on timer, and on PlayerTeleport
+- added null check to storeInventory() in UniversePlayer
+- fixed errors preventing storing and retrieving inventories from the database in SQL and Serializer
+- Functional implemention of player inventories portion of PerWorldInventories
+- moved inventory saving to PlayerChangeWorld
+- created inventoryManagement() method in PlayerChangeWorld
+- moved inventory management code to inventoryManagement()
+- added stat management method
+- duplicated UniversePlayer inventory manangement methods for ender chest management
+- added enderChestManagement() in PlayerChangeWorld
+- added check for player name change to update in database
+- changed playerdata table to take json for the stats
+- added stats JsonObject to UniversePlayer to store stats
+- added buildStats(), loadStats(), saveStats(), and storeStats() methods to UniversePlayer
+- added parseStats() and storeStats() methods to Serializer
+- added query on join to check if player exists in table, inserts them if not
+- removed PlayerTeleportEvent handler
+- added statManagement() in PlayerChangeWorld
+- fixed deserialize() in Serializer to account for ender chests
+- fixed errors preventing loading of ender chest inventories and stats
+- ender chest inventories per world functional
+- stats per world functional
+- added world settings variables and functions to Universe
+- added ConvertCommand for converting worlds to new storage system
+- world loading system rewritten for new storage system
+- removed enderchest management functions from PlayerChangeWorld and UniversePlayer in favor of a single set of
+functions to handle both
+- reimplemented check for if per-world-inventories/stats is enabled
+- removed SaveInventoryTask and SaveInventoryThread; they are not needed
+- moved world loading code to WorldLoader
+- moved command registrar, event handler registrar, and world loading trigger to UniverseLoader
+- reorganized Universes main class
+- implemented checks for if inventory grouping is on
+- functional implementation of per-world-inventory-grouping
+- implemented checks for per-world-stats
+- functional implementation of per-world-stats
+- per world inventories feature fully implemented and tested
+- added inventory conversion code to ConvertCommand
+- added player stats conversion code to ConvertCommand
+- fixed error in SQL where there was no connection validation before attempting a reconnect to database
+- ConvertCommand fully implemented
+- fixed bug where spawn flags were ignored on restart and reload
+- replaced long looped if conditionals with simple instanceof checks when removing entities on allowMonsters and
+allowAnimals toggle
+- modified Universe table in database to hold spawn location has JSON
+- adjusted ModifyCommand and WorldSettingsGUI to update settings in database instead of file
+- adjusted ChangePlayerLimit and ChangeRespawnWorld to update settings in database instead of file
+- modified Universe table in database to hold game mode, spawn point, and respawn world
+- rewrote CreateCommand to use new storage system
+- modified DeleteCommand to use new storage system
+- added permission check to ConvertCommand
+- added permission Universes.convert to plugin.yml
+- fixed typo in Universes.spawn permission child in Universes.* permission
+- added /universeconvert command to HelpCommand
+- rewrote import command for new storage system
+- replaced string concatonation in loop with a StringBuilder in ListWorldsCommand
+- made reload command functional
+- added previous location management code to UniversePlayer
+- modified SpawnCommand to use new Universe class and UniversePlayer class
+- rewrote TeleportCommand to use new UniversePlayer and Universe classes
+- added RespawnEvent to handle PlayerRespawnEvent for use-respawnWorld
+- added PlayerDeathEvent handler to RespawnEvent for saving location on death
+- renamed teleport-tracking track-previous-locations in config.yml
+- added new config option "save-location-on-death", to save the death location as a previous location for teleport tracking
+- removed save-inventory-on-death from config.yml as it is no longer used
+- modified code for SQLite errors when using a local database
+- created TeleportEvent with PlayerTeleportEvent handle to save previous locations on world change from non-Universes commands
+- added prefix-chat option to config.yml
+- created ChatPrefixFile to create prefixes.yml
+- removed unneeded global variables from Universes main
+- added ChatEvent for AsyncChatEvent handler
+- added code to change chat format and add world tags
+- fixed bug in ConvertCommand that prevented the rest of the plugin from being able to read xp and levels
+- rewrote Universe-Nethers to work with new storage system
+- added event priority to u-nethers PlayerPortalEvent handler
+- added InventoryManagement class
+- moved inventory and stat management methods from PlayerChangeWorld to InventoryManagement and made them static
+- rewrote Universe-Ends to fix old bugs and to make it work with the new storage system
+- added abiity to change difficulty to ModifyCommand
+- added difficulty toggle to WorldSettingsGUI
+- fixed bug in stat conversion where health or hunger levels at 0 were not reset to 20, resulting in death upon entering a world
+- added PortalEvent to handle PlayerPortalEvent to check if to world is full
+- modified option names in OverridesUI
+- added blocked commands column to database
+- added BlockCommands and UnblockCommands for blocking and unblocking commands
+- added Blocked Commands Override to OverridesUI
+- added Block Commands and Unblock Commands options to WorldSettingsUI

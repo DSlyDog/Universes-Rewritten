@@ -86,7 +86,8 @@ public class WorldLoader {
 
         Generator generator = new Generator(plugin, file.getName());
         generator.setEnvironment(getEnvironment(environment, null));
-        generator.setGenerator(generatorName);
+        if (generatorName == null || !generatorName.equals(""))
+            generator.setGenerator(generatorName);
         generator.setSeed(seed);
         generator.createWorld();
 

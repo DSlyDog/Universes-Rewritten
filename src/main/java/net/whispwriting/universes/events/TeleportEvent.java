@@ -31,7 +31,7 @@ public class TeleportEvent implements Listener {
                     UniversePlayer uPlayer = plugin.onlinePlayers.get(player.getName());
                     uPlayer.savePreviousLocation(fromUniverse, player.getLocation());
                     if (plugin.returnToPreviousLocation){
-                        //event.setTo(uPlayer.loadPreviousLocation(toUniverse));
+                        event.setTo(uPlayer.loadPreviousLocation(toUniverse));
                     }
                 }
             }
