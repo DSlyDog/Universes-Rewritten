@@ -59,7 +59,7 @@ public class ConfigFile extends AbstractFile{
                     "#Version is simply the current plugin version. This is used by the plugin primarily\n" +
                     "#for updating configuration files when a new version has been installed. For example,\n" +
                     "#it was used to rewrite the config.yml file with these comments in Universes 5.0.\n" +
-                    "version: \"5.0-beta4\"" +
+                    "version: \"5.0.1\"" +
                     "\n" +
                     "\n" +
                     "#Per-world-inventories is exactly what it says. Turning this option on will\n" +
@@ -111,7 +111,7 @@ public class ConfigFile extends AbstractFile{
                     "\n" +
                     "\n" +
                     "#Return-to-previous-locations is an option that effects world changes from all causes except nether\n" +
-                    "#and end portals. This uses the locations saved by Track-previous-locations, to send players to their\n" +
+                    "#and end portals. This uses the locations saved by Track-previous-locations to send players to their\n" +
                     "#previous locations during teleports triggered by other plugins. Please note, Track-previous-locations\n" +
                     "#MUST be set to TRUE for this to work. This is false by default.\n" +
                     "return-to-previous-locations: " + Universes.plugin.returnToPreviousLocation +
@@ -142,7 +142,9 @@ public class ConfigFile extends AbstractFile{
                     "#Prefix-chat is an option that will affect chat messages. When enabled, a prefix will appear\n" +
                     "#in front of the player's name. By default it is the world name in brackets (i.e. [world]),\n" +
                     "#but the prefixes are fully customizable in the prefixes.yml file. Prefixes do not necessarily\n" +
-                    "#have to be the world name. The prefixes.yml file has examples. This is false by default.\n" +
+                    "#have to be the world name. The prefixes.yml file has examples. Also, if you are using PlaceholderAPI,\n" +
+                    "#you must put the UniversePlaceholders.jar file into the PlaceholderAPI extensions folder for this\n" +
+                    "#feature to work. This is false by default.\n" +
                     "prefix-chat: " + Universes.plugin.prefixChat +
                     "\n" +
                     "\n" +

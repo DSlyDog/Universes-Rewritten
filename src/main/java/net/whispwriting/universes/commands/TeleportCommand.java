@@ -42,12 +42,12 @@ public class TeleportCommand implements CommandExecutor {
                 }
             }else{
                 if (args.length == 1) {
-                    if (!player.hasPermission("Universes.teleport." + args[0]) && !player.hasPermission("Universes.teleport.*")){
+                    if (!player.hasPermission("Universes.universe." + args[0]) && !player.hasPermission("Universes.teleport.*")){
                         player.sendMessage(ChatColor.DARK_RED + "You do not have permission to teleport to that world");
                         return true;
                     }
                 }else if (args.length >= 2){
-                    if (!player.hasPermission("Universes.teleport." + args[0]) && !player.hasPermission("Universes.teleport.*")){
+                    if (!player.hasPermission("Universes.universe." + args[0]) && !player.hasPermission("Universes.teleport.*")){
                         player.sendMessage(ChatColor.DARK_RED + "You may not teleport other players to worlds you do not have permission to access");
                         return true;
                     }

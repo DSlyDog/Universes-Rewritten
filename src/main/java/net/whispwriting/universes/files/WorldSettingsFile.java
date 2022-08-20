@@ -27,7 +27,8 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("seed", world.getSeed());
         config.set("generator", generator);
         config.set("gameMode", "survival");
-        config.set("playerLimit", -1);
+        config.set("playerLimit", 0);
+        config.set("playerLimitEnabled", false);
         config.set("difficulty", world.getDifficulty().name());
         config.set("allowPvP", true);
         config.set("allowAnimals", true);
@@ -39,7 +40,7 @@ public class WorldSettingsFile extends AbstractFile{
 
     public void updateValues(GameMode gameMode, Location spawn, World.Environment environment, String respawnWorld, int maxPlayers, boolean allowAnimals,
                              Difficulty difficulty, boolean allowMonsters, boolean allowFlight, boolean allowPvp,
-                             List<String> blockedCommands){
+                             boolean playerLimitEnabled, List<String> blockedCommands){
         config.set("spawn.x", spawn.getX());
         config.set("spawn.y", spawn.getY());
         config.set("spawn.z", spawn.getZ());
@@ -49,7 +50,10 @@ public class WorldSettingsFile extends AbstractFile{
         config.set("respawnWorld", respawnWorld);
         config.set("gameMode", gameMode.name().toLowerCase());
         config.set("difficulty", difficulty.name());
+        if (maxPlayers == -1)
+            maxPlayers = 0;
         config.set("playerLimit", maxPlayers);
+        config.set("playerLimitEnabled", playerLimitEnabled);
         config.set("allowAnimals", allowAnimals);
         config.set("allowMonsters", allowMonsters);
         config.set("allowFlight", allowFlight);

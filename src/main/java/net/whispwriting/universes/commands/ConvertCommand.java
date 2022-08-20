@@ -64,7 +64,8 @@ public class ConvertCommand implements CommandExecutor {
                 WorldSettingsFile worldSettingsFile = new WorldSettingsFile(plugin, universe.serverWorld().getName());
                 worldSettingsFile.updateValues(universe.gameMode(), universe.spawn(), universe.serverWorld().getEnvironment(),
                         universe.respawnWorld(), universe.maxPlayers(), universe.isAllowAnimals(), universe.getDifficulty(),
-                        universe.isAllowMonsters(), universe.isAllowFlight(), universe.isAllowPvP(), universe.blockedCommands());
+                        universe.isAllowMonsters(), universe.isAllowFlight(), universe.isAllowPvP(), universe.isPlayerLimitEnabled(),
+                        universe.blockedCommands());
                 worldSettingsFile.save();
             }
 

@@ -36,7 +36,7 @@ public class SpawnCommand implements CommandExecutor {
                 }
             }else{
                 if (args.length == 1) {
-                    if (!player.hasPermission("Universes.teleport." + args[0]) && !player.hasPermission("Universes.teleport.*")){
+                    if (!player.hasPermission("Universes.universe." + args[0]) && !player.hasPermission("Universes.teleport.*")){
                         player.sendMessage(ChatColor.DARK_RED + "You do not have permission to teleport to that world");
                         return true;
                     }

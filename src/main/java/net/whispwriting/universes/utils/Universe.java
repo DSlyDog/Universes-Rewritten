@@ -125,12 +125,7 @@ public class Universe {
 
     public void setMaxPlayers(int maxPlayers){
         this.maxPlayers = maxPlayers;
-        this.playerLimitEnabled = updatePlayerLimitEnabled();
         save();
-    }
-
-    private boolean updatePlayerLimitEnabled(){
-        return maxPlayers != -1;
     }
 
     public boolean isAtMaxPlayers(){
@@ -200,9 +195,14 @@ public class Universe {
         return playerLimitEnabled;
     }
 
+    public void setPlayerLimitEnabled(boolean playerLimitEnabled){
+        this.playerLimitEnabled = playerLimitEnabled;
+        save();
+    }
+
     public void save(){
         worldSettings.updateValues(gameMode, spawn, world.getEnvironment(), respawnWorld, maxPlayers, allowAnimals,
-                world.getDifficulty(), allowMonsters, allowFlight, allowPvP, blockedCommands);
+                world.getDifficulty(), allowMonsters, allowFlight, allowPvP, playerLimitEnabled, blockedCommands);
         worldSettings.save();
     }
 

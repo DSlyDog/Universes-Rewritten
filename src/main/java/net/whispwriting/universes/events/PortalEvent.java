@@ -23,7 +23,15 @@ public class PortalEvent implements Listener {
         Universe universe = plugin.universes.get(event.getTo().getWorld().getName());
         PlayerSettingsFile playerSettings = new PlayerSettingsFile(plugin, event.getPlayer().getUniqueId().toString());
         boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
-        if (plugin.worldEntryPermissions && !plugin.netherPerOverworld){
+
+        if (plugin.netherPerOverworld && event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
+            return;
+
+        if (plugin.endPerOverworld && event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL)
+            return;
+
+        if (plugin.worldEntryPermissions){
+            event.getPlayer().sendMessage("Universes.universe." + universe.serverWorld().getName());
             if (!event.getPlayer().hasPermission("Universes.universe." + universe.serverWorld().getName())){
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(ChatColor.DARK_RED + "You do not have permission to enter that world");
@@ -35,19 +43,6 @@ public class PortalEvent implements Listener {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(ChatColor.RED + "Sorry, that world is full.");
             }
-        }
-
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL){
-            //endPortal(event);
-        }
-    }
-
-    public void endPortal(PlayerPortalEvent event){
-        if (event.getFrom().getWorld().getName().contains("_the_end")){
-            if (event.getPlayer().getBedSpawnLocation() != null)
-                event.setTo(event.getPlayer().getBedSpawnLocation());
-            else
-                event.setTo(Bukkit.getWorlds().get(0).getSpawnLocation());
         }
     }
 }

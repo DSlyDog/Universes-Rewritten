@@ -27,20 +27,30 @@ public class TeleportTabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         List<String> worlds = new ArrayList<>();
         if (!Universes.plugin.usePerWorldTeleportPermissions){
-            if (!commandSender.hasPermission("Universes.teleport")){
-                return worlds;
-            }else{
-                for (World world : Bukkit.getWorlds()){
-                    worlds.add(world.getName());
+            if (strings.length == 1) {
+                if (!commandSender.hasPermission("Universes.teleport")) {
+                    return worlds;
+                } else {
+                    for (World world : Bukkit.getWorlds()) {
+                        worlds.add(world.getName());
+                    }
+                    return worlds;
+                }
+            }else if (strings.length == 2){
+                return null;
+            }
+            return null;
+        }else{
+            if (strings.length == 1) {
+                for (World world : Bukkit.getWorlds()) {
+                    if (commandSender.hasPermission("Universes.universe." + world.getName()) || commandSender.hasPermission("Universes.universe.*"))
+                        worlds.add(world.getName());
                 }
                 return worlds;
+            }else if (strings.length == 2){
+                return null;
             }
-        }else{
-            for (World world : Bukkit.getWorlds()){
-                if (commandSender.hasPermission("Universes.teleport." + world.getName()) || commandSender.hasPermission("Universes.teleport.*"))
-                    worlds.add(world.getName());
-            }
-            return worlds;
         }
+        return null;
     }
 }

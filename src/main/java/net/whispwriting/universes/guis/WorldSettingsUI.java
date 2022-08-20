@@ -76,29 +76,35 @@ public class WorldSettingsUI {
         int playerLimit = universe.maxPlayers();
         Utils.createItem(inv, Material.PLAYER_HEAD, 1, 6, "&bPlayer Limit", "WhispPL", Material.PLAYER_HEAD, items, "&dClick to change the player limit.", "&2Player limit is currently: "+playerLimit+".");
 
-        if (!universe.isAllowFlight()){
-            Utils.createItem(inv, Material.ELYTRA, 1, 7, "&bAllow Flight", "WhispFly", Material.ELYTRA, items, "&dClick to enable or disable.", "&callowFlight is currently disabled.");
+        if (!universe.isPlayerLimitEnabled()){
+            Utils.createItem(inv, Material.IRON_HELMET, 1, 7, "&bEnable Player Limit", "WhispPLE", Material.IRON_HELMET, items, "&dClick to enable or disable.", "&cPlayer limit is currently disabled");
         }else{
-            Utils.createItem(inv, Material.ELYTRA, Enchantment.MENDING,1, 7, "&bAllow Flight", "WhispFly", Material.ELYTRA, items, "&dClick to enable or disable.", "&2allowFlight is currently enabled.");
+            Utils.createItem(inv, Material.IRON_HELMET, Enchantment.MENDING, 1, 7, "&bEnable Player Limit", "WhispPLE", Material.IRON_HELMET, items, "&dClick to enable or disable.", "&2Player limit is currently enabled");
+        }
+
+        if (!universe.isAllowFlight()){
+            Utils.createItem(inv, Material.ELYTRA, 1, 8, "&bAllow Flight", "WhispFly", Material.ELYTRA, items, "&dClick to enable or disable.", "&callowFlight is currently disabled.");
+        }else{
+            Utils.createItem(inv, Material.ELYTRA, Enchantment.MENDING,1, 8, "&bAllow Flight", "WhispFly", Material.ELYTRA, items, "&dClick to enable or disable.", "&2allowFlight is currently enabled.");
         }
 
         Difficulty difficulty = universe.getDifficulty();
         if (difficulty == Difficulty.PEACEFUL){
             List<Material> swapItems = Arrays.asList(Material.STONE_SWORD, Material.IRON_SWORD, Material.GOLDEN_SWORD);
-            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 8, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
+            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 9, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
         }else if (difficulty == Difficulty.EASY){
             List<Material> swapItems = Arrays.asList(Material.WOODEN_SWORD, Material.IRON_SWORD, Material.GOLDEN_SWORD);
-            Utils.createItem(inv, Material.STONE_SWORD, 1, 8, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
+            Utils.createItem(inv, Material.STONE_SWORD, 1, 9, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
         }else if (difficulty == Difficulty.NORMAL){
             List<Material> swapItems = Arrays.asList(Material.STONE_SWORD, Material.WOODEN_SWORD, Material.GOLDEN_SWORD);
-            Utils.createItem(inv, Material.IRON_SWORD, 1, 8, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
+            Utils.createItem(inv, Material.IRON_SWORD, 1, 9, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
         }else{
             List<Material> swapItems = Arrays.asList(Material.STONE_SWORD, Material.IRON_SWORD, Material.WOODEN_SWORD);
-            Utils.createItem(inv, Material.GOLDEN_SWORD, 1, 8, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
+            Utils.createItem(inv, Material.GOLDEN_SWORD, 1, 9, "&bDifficulty", "WhispDiff", swapItems, items, "&dClick to change difficulty.", "&2Difficulty is currently: "+difficulty.name().toLowerCase()+".");
         }
 
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&bBlock Command", "WhispBC", Material.BARRIER, items, "&dClick to block a command.");
-        Utils.createItem(inv, Material.SLIME_BALL, 1, 10, "&bUnblock Command", "WhispUbC", Material.SLIME_BALL, items, "&dClick to unblock a command.");
+        Utils.createItem(inv, Material.BARRIER, 1, 10, "&bBlock Command", "WhispBC", Material.BARRIER, items, "&dClick to block a command.");
+        Utils.createItem(inv, Material.SLIME_BALL, 1, 11, "&bUnblock Command", "WhispUbC", Material.SLIME_BALL, items, "&dClick to unblock a command.");
 
         returnInv.setContents(inv.getContents());
         return returnInv;
@@ -249,7 +255,7 @@ public class WorldSettingsUI {
                 clicked.setType(Material.GRASS_BLOCK);
                 player.sendMessage(Utils.chat("&2GameMode has been changed to Survival."));
             }
-        }else if (clicked.getItemMeta().getDisplayName().equals(Utils.chat("&bRespawn World"))){
+        }else if (clicked.getItemMeta().getDisplayName().equals(Utils.chat("&bRespawn World"))) {
             player.closeInventory();
             Bukkit.getPluginManager().registerEvents(new ChangeRespawnWorld(player.getUniqueId().toString(), plugin, universe), plugin);
             player.sendMessage(Utils.chat("&2Please enter the name of the new respawn world."));
@@ -257,6 +263,29 @@ public class WorldSettingsUI {
             player.closeInventory();
             Bukkit.getPluginManager().registerEvents(new ChangePlayerLimit(player.getUniqueId().toString(), plugin, universe), plugin);
             player.sendMessage(Utils.chat("&2Please enter a number for the new player limit."));
+        }else if(clicked.getItemMeta().getDisplayName().equals(Utils.chat("&bEnable Player Limit"))){
+            if (universe.isPlayerLimitEnabled()){
+                ItemMeta meta = clicked.getItemMeta();
+                List<String> lore = meta.getLore();
+                lore.remove(1);
+                lore.add(Utils.chat("&cPlayer limit is currently disabled."));
+                meta.setLore(lore);
+                clicked.setItemMeta(meta);
+                universe.setPlayerLimitEnabled(false);
+                clicked.removeEnchantment(Enchantment.MENDING);
+                player.sendMessage(Utils.chat("&cPlayer limit has been disabled in this world."));
+            }else{
+                ItemMeta meta = clicked.getItemMeta();
+                List<String> lore = meta.getLore();
+                lore.remove(1);
+                lore.add(Utils.chat("&2Player limit is currently enabled."));
+                meta.setLore(lore);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                clicked.setItemMeta(meta);
+                universe.setPlayerLimitEnabled(true);
+                clicked.addUnsafeEnchantment(Enchantment.MENDING, 2);
+                player.sendMessage(Utils.chat("&2Player limit has been enabled in this world."));
+            }
         }else if (clicked.getItemMeta().getDisplayName().equals(Utils.chat("&bAllow Flight"))){
             if (universe.isAllowFlight()){
                 ItemMeta meta = clicked.getItemMeta();

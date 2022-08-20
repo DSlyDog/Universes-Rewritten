@@ -47,12 +47,14 @@ public class TeleportEvent implements Listener {
             }
         }
 
-        PlayerSettingsFile playerSettings = new PlayerSettingsFile(plugin, event.getPlayer().getUniqueId().toString());
-        boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
-        if (!canJoinFullWorlds){
-            if (universe.isAtMaxPlayers()){
-                event.setCancelled(true);
-                event.getPlayer().sendMessage(ChatColor.RED + "Sorry, that world is full.");
+        if (universe.isPlayerLimitEnabled()) {
+            PlayerSettingsFile playerSettings = new PlayerSettingsFile(plugin, event.getPlayer().getUniqueId().toString());
+            boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
+            if (!canJoinFullWorlds) {
+                if (universe.isAtMaxPlayers()) {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(ChatColor.RED + "Sorry, that world is full.");
+                }
             }
         }
     }

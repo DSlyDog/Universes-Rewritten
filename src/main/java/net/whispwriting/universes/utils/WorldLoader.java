@@ -74,9 +74,7 @@ public class WorldLoader {
         String generatorName = worldSettings.get().getString("generator");
         GameMode gameMode = getGameModeFromString(worldSettings.get().getString("gameMode"));
         int playerLimit = worldSettings.get().getInt("playerLimit");
-        boolean playerLimitEnabled = false;
-        if (playerLimit >= 0)
-            playerLimitEnabled = true;
+        boolean playerLimitEnabled = worldSettings.get().getBoolean("playerLimitEnabled", false);
         Difficulty difficulty = getDifficulty(worldSettings.get().getString("difficulty"), null);
         boolean allowPvP = worldSettings.get().getBoolean("allowPvP", true);
         boolean allowAnimals = worldSettings.get().getBoolean("allowAnimals", true);
