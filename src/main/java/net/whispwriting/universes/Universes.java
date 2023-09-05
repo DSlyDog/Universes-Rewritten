@@ -41,6 +41,7 @@ public final class Universes extends JavaPlugin {
     public boolean endPerOverworld;
     public boolean othersControlLeaveEnd;
     public boolean toEntryPortal;
+    public boolean toHubOnRespawn;
     public boolean toGroupOnRespawn;
     public boolean useBedRespawn;
     public boolean perWorldBedRespawn;
@@ -127,6 +128,7 @@ public final class Universes extends JavaPlugin {
         toEntryPortal = config.get().getBoolean("return-to-entry-portal");
         endPerOverworld = config.get().getBoolean("end-per-overworld");
         othersControlLeaveEnd = config.get().getBoolean("let-other-plugin-control-leaving-end");
+        toHubOnRespawn = config.get().getBoolean("respawn-at-hub");
         toGroupOnRespawn = config.get().getBoolean("respawn-at-group-spawn");
         useBedRespawn = config.get().getBoolean("use-bed-respawn");
         perWorldBedRespawn = config.get().getBoolean("per-world-bed-spawns");
