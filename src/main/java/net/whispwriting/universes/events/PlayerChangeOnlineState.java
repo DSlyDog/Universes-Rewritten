@@ -2,6 +2,7 @@ package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.SpawnFile;
+import net.whispwriting.universes.utils.InventoryManagement;
 import net.whispwriting.universes.utils.Universe;
 import net.whispwriting.universes.utils.UniversePlayer;
 import net.whispwriting.universes.utils.sql.SQLResult;
@@ -41,6 +42,7 @@ public class PlayerChangeOnlineState implements Listener {
             if (Universes.econ != null)
                 uPlayer.buildBalances();
         uPlayer.buildPreviousLocations();
+        InventoryManagement.loadInventory(uPlayer, plugin.universes.get(player.getWorld().getName()));
     }
 
     @EventHandler
@@ -74,6 +76,7 @@ public class PlayerChangeOnlineState implements Listener {
         Player player = event.getPlayer();
         UniversePlayer uPlayer = plugin.onlinePlayers.remove(player.getName());
         plugin.universes.get(player.getWorld().getName()).decrementPlayerCount();
+        uPlayer.saveInventory(plugin.universes.get(player.getWorld().getName()));
         uPlayer.storeInventory(plugin.universes.get(player.getWorld().getName()));
         uPlayer.saveStats(plugin.universes.get(player.getWorld().getName()));
         uPlayer.storeStats();

@@ -48,6 +48,7 @@ public class ReloadCommand implements CommandExecutor {
         plugin.useFirstJoinSpawn = plugin.config.get().getBoolean("use-first-join-spawn");
         plugin.worldEntryPermissions = plugin.config.get().getBoolean("world-entry-permissions");
         plugin.hubOnJoin = plugin.config.get().getBoolean("rejoin-at-hub");
+        plugin.toHubOnRespawn = plugin.config.get().getBoolean("respawn-at-hub");
         plugin.toGroupOnRespawn = plugin.config.get().getBoolean("respawn-at-group-spawn");
         plugin.useBedRespawn = plugin.config.get().getBoolean("use-bed-respawn");
         plugin.perWorldBedRespawn = plugin.config.get().getBoolean("per-world-bed-spawns");

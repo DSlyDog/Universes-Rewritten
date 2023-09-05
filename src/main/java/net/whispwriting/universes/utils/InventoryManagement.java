@@ -22,7 +22,7 @@ public class InventoryManagement {
         }
     }
 
-    private static void loadInventory(UniversePlayer player, Universe toUniverse){
+    public static void loadInventory(UniversePlayer player, Universe toUniverse){
         boolean success = player.loadInventory(toUniverse);
         if (!success){
             player.buildInventory(toUniverse);

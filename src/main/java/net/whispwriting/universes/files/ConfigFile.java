@@ -35,6 +35,7 @@ public class ConfigFile extends AbstractFile{
         Universes.plugin.returnToPreviousLocation = false;
         Universes.plugin.useBedRespawn = false;
         Universes.plugin.perWorldBedRespawn = false;
+        Universes.plugin.toHubOnRespawn = false;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ConfigFile extends AbstractFile{
                     "#Version is simply the current plugin version. This is used by the plugin primarily\n" +
                     "#for updating configuration files when a new version has been installed. For example,\n" +
                     "#it was used to rewrite the config.yml file with these comments in Universes 5.0.\n" +
-                    "version: \"5.0.1\"" +
+                    "version: \"5.0.3\"" +
                     "\n" +
                     "\n" +
                     "#Per-world-inventories is exactly what it says. Turning this option on will\n" +
@@ -225,6 +226,11 @@ public class ConfigFile extends AbstractFile{
                     "#Rejoin-at-hub is exactly what it says. When enabled, players will be returned to the hub when they\n" +
                     "#log in. This is false by default.\n" +
                     "rejoin-at-hub: " + Universes.plugin.hubOnJoin +
+                    "\n" +
+                    "\n" +
+                    "#Respawn-at-hub will have the player respawn at the hub. Please note that a hub must be set for this\n" +
+                    "#to work. This is overridden by Respawn-at-group-spawn and Use-bed-respawn. This is false by default\n" +
+                    "respawn-at-hub: " + Universes.plugin.toHubOnRespawn +
                     "\n" +
                     "\n" +
                     "#Respawn-at-group-spawn is also exactly what it says. When enabled, players will be spawned at the\n" +
