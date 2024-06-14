@@ -30,12 +30,12 @@ public class OverridesInventoryClick implements Listener {
         try {
             ItemStack item = e.getCurrentItem();
             UIItemData itemData = OverrideUI.items.get(item.getType());
-            if (item.getItemMeta().getLocalizedName().equals(itemData.getID())) {
+            if (item.getItemMeta().getDisplayName().equals(itemData.getID())) {
                 e.setCancelled(true);
                 OverrideUI.clickItem((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory(), plugin);
             }
         }catch(NullPointerException err){
-            // do nothing
+            //do nothing
         }
     }
 

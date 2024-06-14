@@ -33,7 +33,7 @@ public class Utils {
         meta.setLocalizedName(id);
         meta.setLore(lore);
         item.setItemMeta(meta);
-        UIItemData i = new UIItemData(item, id);
+        UIItemData i = new UIItemData(item, chat(displayName));
         items.put(m ,i);
         items.put(swapItem, i);
         inv.setItem(inventorySlot, item);
@@ -55,7 +55,7 @@ public class Utils {
         meta.setLocalizedName(id);
         meta.setLore(lore);
         item.setItemMeta(meta);
-        UIItemData i = new UIItemData(item, id);
+        UIItemData i = new UIItemData(item, chat(displayName));
         items.put(m ,i);
         items.put(swapItem, i);
         inv.setItem(inventorySlot, item);
@@ -76,7 +76,7 @@ public class Utils {
         meta.setLocalizedName(id);
         meta.setLore(lore);
         item.setItemMeta(meta);
-        UIItemData i = new UIItemData(item, id);
+        UIItemData i = new UIItemData(item, chat(displayName));
         items.put(m ,i);
         items.put(swapItem, i);
         inv.setItem(inventorySlot, item);
@@ -98,7 +98,7 @@ public class Utils {
         meta.setLocalizedName(id);
         meta.setLore(lore);
         item.setItemMeta(meta);
-        UIItemData i = new UIItemData(item, id);
+        UIItemData i = new UIItemData(item, chat(displayName));
         items.put(m ,i);
         items.put(swapItem, i);
         inv.setItem(inventorySlot, item);
@@ -118,10 +118,10 @@ public class Utils {
         meta.setLore(lore);
         meta.setLocalizedName(id);
         item.setItemMeta(meta);
-        UIItemData i = new UIItemData(item, id);
+        UIItemData i = new UIItemData(item, displayName);
         items.put(m, i);
         for (Material swapItem : swapItems) {
-            UIItemData iz = new UIItemData(item, id);
+            UIItemData iz = new UIItemData(item, chat(displayName));
             items.put(swapItem, iz);
         }
         inv.setItem(inventorySlot, item);
