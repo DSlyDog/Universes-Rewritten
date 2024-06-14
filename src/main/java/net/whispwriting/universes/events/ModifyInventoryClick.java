@@ -31,7 +31,7 @@ public class ModifyInventoryClick implements Listener {
         try {
             ItemStack item = e.getCurrentItem();
             UIItemData itemData = WorldSettingsUI.items.get(item.getType());
-            if (item.getItemMeta().getLocalizedName().equals(itemData.getID())) {
+            if (item.getItemMeta().getDisplayName().equals(itemData.getID())) {
                 e.setCancelled(true);
                 WorldSettingsUI.clicked((Player) e.getWhoClicked(), plugin, e.getCurrentItem(), e.getWhoClicked().getLocation().getWorld().getName());
             }
