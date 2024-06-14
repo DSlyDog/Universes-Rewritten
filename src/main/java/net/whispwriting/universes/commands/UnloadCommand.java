@@ -43,12 +43,17 @@ public class UnloadCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "No world could be found by that name.");
             return true;
         }
+        if (!universe.serverWorld().getPlayers().isEmpty()){
+            sender.sendMessage(ChatColor.RED + "There are players in that world. Please remove them before unloading.");
+            return true;
+        }
         sender.sendMessage(ChatColor.GREEN + "Started unloading world.");
         File file = new File(Universes.plugin.getDataFolder() + "/worlds/"+universe.serverWorld().getName());
         deleteFolderContents(file);
         file.delete();
         removeFromGroups(universe.serverWorld());
         Bukkit.unloadWorld(universe.serverWorld(), true);
+        plugin.universes.remove(universe.serverWorld().getName());
         sender.sendMessage(ChatColor.GREEN + "Unload complete.");
         return true;
     }
