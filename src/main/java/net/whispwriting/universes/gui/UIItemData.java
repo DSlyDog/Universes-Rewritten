@@ -1,6 +1,5 @@
-package net.whispwriting.universes.guis;
+package net.whispwriting.universes.gui;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class UIItemData {

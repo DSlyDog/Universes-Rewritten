@@ -1,4 +1,4 @@
-package net.whispwriting.universes.guis;
+package net.whispwriting.universes.gui;
 
 import com.google.gson.JsonObject;
 import net.whispwriting.universes.Universes;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class WorldSettingsUI {
+public class WorldSettingsUI_Old {
 
     public static Map<Material, UIItemData> items = new HashMap<>();
     public static Inventory inv;

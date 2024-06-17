@@ -1,4 +1,4 @@
-package net.whispwriting.universes.guis;
+package net.whispwriting.universes.gui;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.PlayerSettingsFile;

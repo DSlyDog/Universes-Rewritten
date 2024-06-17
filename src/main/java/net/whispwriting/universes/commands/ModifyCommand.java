@@ -1,21 +1,15 @@
 package net.whispwriting.universes.commands;
 
-import com.google.gson.JsonObject;
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.events.ModifyInventoryClick;
-import net.whispwriting.universes.files.PlayerSettingsFile;
-import net.whispwriting.universes.guis.WorldSettingsUI;
+import net.whispwriting.universes.gui.WorldSettingsUI_Old;
+import net.whispwriting.universes.gui.guis.WorldSettingsUI;
 import net.whispwriting.universes.utils.Universe;
-import net.whispwriting.universes.utils.sql.SQL;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
-
-import java.util.Collection;
-import java.util.InputMismatchException;
-import java.util.List;
 
 public class ModifyCommand implements CommandExecutor {
 
@@ -38,8 +32,11 @@ public class ModifyCommand implements CommandExecutor {
         if (sender.hasPermission("Universes.modify")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                player.openInventory(WorldSettingsUI.GUI(player, plugin.universes.get(player.getWorld().getName()), plugin));
-                Bukkit.getPluginManager().registerEvents(new ModifyInventoryClick(plugin, player.getUniqueId().toString()), plugin);
+                Universe universe = plugin.universes.get(player.getWorld().getName());
+                //player.openInventory(WorldSettingsUI_Old.GUI(player, plugin.universes.get(player.getWorld().getName()), plugin));
+                WorldSettingsUI.getFor(universe).build();
+                player.openInventory(WorldSettingsUI.getFor(universe).get());
+                Bukkit.getPluginManager().registerEvents(new ModifyInventoryClick(universe, player.getUniqueId().toString(), plugin), plugin);
             } else {
                 sender.sendMessage(ChatColor.RED + "Only players may execute that command");
             }

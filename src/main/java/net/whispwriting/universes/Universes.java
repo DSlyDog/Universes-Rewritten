@@ -2,10 +2,8 @@ package net.whispwriting.universes;
 
 import net.milkbowl.vault.economy.Economy;
 import net.whispwriting.universes.files.*;
-import net.whispwriting.universes.guis.WorldSettingsUI;
+import net.whispwriting.universes.gui.WorldSettingsUI_Old;
 import net.whispwriting.universes.utils.*;
-import net.whispwriting.universes.utils.economy.EconomyHandler;
-import net.whispwriting.universes.utils.sql.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -65,7 +63,7 @@ public final class Universes extends JavaPlugin {
         UniverseLoader.registerTabCompleters(this);
         UniverseLoader.registerEventHandlers(this);
         UniverseLoader.loadWorlds(this);
-        WorldSettingsUI.init();
+        WorldSettingsUI_Old.init();
         startupComplete = true;
         setupEconomy();
         checkConfigVersion();
