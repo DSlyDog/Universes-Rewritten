@@ -19,7 +19,7 @@ import java.util.logging.Level;
 public class GUIItem {
 
     private String displayName;
-    private int amount;
+    private int amount = 1;
     private Material[] materials;
     private Map<Integer, List<String>> lores = new HashMap<>();
     private int matIndex = 0;
