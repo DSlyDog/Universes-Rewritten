@@ -27,8 +27,6 @@ public class UniverseLoader {
         plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin));
         plugin.getCommand("universeinfo").setExecutor(new InfoCommand(plugin));
         plugin.getCommand("universeresetplayercount").setExecutor(new PlayerCountResetCommand(plugin));
-        plugin.getCommand("ueconomy").setExecutor(new EconomyCommand());
-        plugin.getCommand("ubalance").setExecutor(new BalanceCommand());
     }
 
     public static void registerTabCompleters(Universes plugin){

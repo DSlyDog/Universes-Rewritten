@@ -29,6 +29,10 @@ public class ModifyCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Universe-Spawnify"))
+            return true;
+
+        sender.sendMessage("Continuing to base cmd");
         if (sender.hasPermission("Universes.modify")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;

@@ -248,20 +248,4 @@ public class UniversePlayer {
         this.previousLocations = previousLocations;
     }
 
-    public void buildBalances(){
-        if (Universes.plugin.inventoryGrouping) {
-            for (Map.Entry<String, String> group : Universes.plugin.groups.entrySet()) {
-                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), group.getValue());
-                Universes.econ.createPlayerAccount(player, group.getValue());
-                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
-                //Bukkit.getLogger().log(Level.INFO, group.getValue() + ": " + account.get().getDouble("balance"));
-            }
-        }else {
-            for (World world : Bukkit.getWorlds()) {
-                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), world.getName());
-                Universes.econ.createPlayerAccount(player, world.getName());
-                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
-            }
-        }
-    }
 }

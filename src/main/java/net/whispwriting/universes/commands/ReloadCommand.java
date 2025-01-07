@@ -63,7 +63,6 @@ public class ReloadCommand implements CommandExecutor {
         plugin.endPerOverworld = plugin.config.get().getBoolean("end-per-overworld");
         plugin.othersControlLeaveEnd = plugin.config.get().getBoolean("let-other-plugin-control-leaving-end");
         WorldLoader.loadWorlds(plugin);
-        plugin.setupEconomy();
         sender.sendMessage(ChatColor.GREEN + "reloaded config.");
         return true;
     }
