@@ -63,13 +63,13 @@ public class WorldSettingsUI implements GUI {
         return items.get(index);
     }
 
-    private void insertItem(GUIItem item){
+    public void insertItem(GUIItem item){
         items.add(item);
         inventory.setItem(lastIndex, item.getAsItemStack());
         lastIndex++;
     }
 
-    public WorldSettingsUI(Universe universe){
+    private WorldSettingsUI(Universe universe){
         this.universe = universe;
         this.name = "§6§l" + universe.name() + "'s Settings";
         this.inventory = Bukkit.createInventory(null, SIZE.TWO.getValue(), name);
