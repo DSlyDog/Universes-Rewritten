@@ -1,5 +1,5 @@
 name: Universes
-version: 5.0.5
+version: 6.0.0-beta7
 main: net.whispwriting.universes.Universes
 api-version: "1.20"
 prefix: Universes
@@ -80,16 +80,6 @@ commands:
     description: displays the info for a given world
     usage: /universeinfo
     aliases: uinfo
-  ueconomy:
-    description: admin economy command
-    usage: /ueconomy
-    aliases:
-      - ueco
-  ubalance:
-    description: check the player balance
-    usage: /ubalance
-    aliases:
-      - ubal
   universeresetplayercount:
     description: reset the player count for a given world
     usage: /universeresetplayercount
@@ -162,12 +152,6 @@ permissions:
   Universes.info:
     description: allows using /universeinfo
     default: op
-  Universes.economy.admin:
-    description: allows using /ueconomy
-    default: op
-  Universes.economy.use:
-    description: allows using basic economy commands like /bal and /pay
-    default: true
   Universes.*:
     description: Wildcard permission
     default: op

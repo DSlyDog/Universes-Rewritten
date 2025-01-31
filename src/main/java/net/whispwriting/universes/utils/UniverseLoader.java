@@ -37,7 +37,6 @@ public class UniverseLoader {
         plugin.getCommand("universespawn").setTabCompleter(new TeleportTabComplete());
         plugin.getCommand("universeunload").setTabCompleter(new WorldListCompleter());
         plugin.getCommand("universeinfo").setTabCompleter(new WorldListCompleter());
-        plugin.getCommand("ueconomy").setTabCompleter(new EconomyAdminCompleter());
     }
     
     public static void registerEventHandlers(Universes plugin){

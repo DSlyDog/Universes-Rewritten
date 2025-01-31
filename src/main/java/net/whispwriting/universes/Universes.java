@@ -27,6 +27,7 @@ public final class Universes extends JavaPlugin {
     public boolean perWorldInventories;
     public boolean inventoryGrouping;
     public boolean perWorldStats;
+    public boolean removeEffectsOnWorldChange;
     public boolean useRespawnWorld;
     public boolean trackLastLocation;
     public boolean prefixChat;
@@ -60,7 +61,6 @@ public final class Universes extends JavaPlugin {
         UniverseLoader.registerTabCompleters(this);
         UniverseLoader.registerEventHandlers(this);
         UniverseLoader.loadWorlds(this);
-        WorldSettingsUI_Old.init();
         startupComplete = true;
         checkConfigVersion();
 
@@ -101,6 +101,7 @@ public final class Universes extends JavaPlugin {
         perWorldInventories = config.get().getBoolean("per-world-inventories");
         inventoryGrouping = config.get().getBoolean("per-world-inventory-grouping");
         perWorldStats = config.get().getBoolean("per-world-stats");
+        removeEffectsOnWorldChange = config.get().getBoolean("remove-effects-on-world-change");
         useRespawnWorld = config.get().getBoolean("use-respawnWorld");
         trackLastLocation = config.get().getBoolean("track-previous-locations");
         saveLastLocOnDeath = plugin.config.get().getBoolean("save-location-on-death");

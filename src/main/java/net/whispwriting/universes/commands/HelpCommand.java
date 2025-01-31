@@ -59,14 +59,6 @@ public class HelpCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.GOLD + "/usetspawn " +
                     ChatColor.YELLOW + "\nset the spawn point for first time players");
         }
-        if (sender.hasPermission("Universes.economy.admin")){
-            sender.sendMessage(ChatColor.GOLD + "/ueconomy <give:take:set> <playername> <amount>" +
-                    ChatColor.YELLOW + "\nAdmin command for manipulation of player balances");
-        }
-        if (sender.hasPermission("Universes.economy.use")){
-            sender.sendMessage(ChatColor.GOLD + "/ubalance" +
-                    ChatColor.YELLOW + "\nCheck your current balance");
-        }
         if (sender.hasPermission("Universes.convert")){
             sender.sendMessage(ChatColor.GOLD + "/universeconvert " +
                     ChatColor.YELLOW + "\nConvert worlds and player inventories to the new storage system");

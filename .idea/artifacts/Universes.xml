@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/../Build/Universes</output-path>
     <root id="archive" name="Universes.jar">
       <element id="module-output" name="Universes Rewritten" />
+      <element id="module-output" name="Universes" />
     </root>
   </artifact>
 </component>

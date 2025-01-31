@@ -6,7 +6,7 @@
 
   <groupId>net.whispwriting</groupId>
   <artifactId>Universes</artifactId>
-  <version>6-beta4</version>
+  <version>6.0.0-rc1</version>
   <packaging>jar</packaging>
 
   <name>UniversesRewritten</name>

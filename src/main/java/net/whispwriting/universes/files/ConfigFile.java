@@ -18,6 +18,7 @@ public class ConfigFile extends AbstractFile{
         Universes.plugin.perWorldInventories = false;
         Universes.plugin.inventoryGrouping = false;
         Universes.plugin.perWorldStats = false;
+        Universes.plugin.removeEffectsOnWorldChange = true;
         Universes.plugin.useRespawnWorld = false;
         Universes.plugin.trackLastLocation = true;
         Universes.plugin.saveLastLocOnDeath =  true;
@@ -42,7 +43,7 @@ public class ConfigFile extends AbstractFile{
     public void writeComments() {
         try {
             FileWriter writer = new FileWriter(file);
-            writer.write("" +
+            writer.write(
                     "#  ---------------------------------------------------------------------------------------------\n" +
                     "# |                         _    _      _                                                       |\n" +
                     "# |                        | |  | |    (_)                                                      |\n" +
@@ -60,7 +61,7 @@ public class ConfigFile extends AbstractFile{
                     "#Version is simply the current plugin version. This is used by the plugin primarily\n" +
                     "#for updating configuration files when a new version has been installed. For example,\n" +
                     "#it was used to rewrite the config.yml file with these comments in Universes 5.0.\n" +
-                    "version: \"5.0.3\"" +
+                    "version: \"" + Universes.plugin.getDescription().getVersion() + "\"" +
                     "\n" +
                     "\n" +
                     "#Per-world-inventories is exactly what it says. Turning this option on will\n" +
@@ -73,6 +74,13 @@ public class ConfigFile extends AbstractFile{
                     "#option is enabled, each world will have its own set of stats. This includes hunger,\n" +
                     "#health, and xp. This is false by default.\n" +
                     "per-world-stats: " + Universes.plugin.perWorldStats +
+                    "\n" +
+                    "\n" +
+                    "#Remove-effects-on-world-change will only work if per-world-inventories is enabled. This\n" +
+                    "#option will clear a player's active potion effects upon changing worlds, or groups if\n" +
+                    "#grouping is enabled. The main purpose of this option is to prevent players from exploiting\n" +
+                    "#potions or beacons in worlds that have both survival and creative worlds. This is true by default.\n" +
+                    "remove-effects-on-world-change: " + Universes.plugin.removeEffectsOnWorldChange +
                     "\n" +
                     "\n" +
                     "#Per-world-inventory-grouping will only work if per-world-inventories is enabled. This\n" +
