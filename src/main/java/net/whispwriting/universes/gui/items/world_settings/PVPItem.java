@@ -27,10 +27,10 @@ public class PVPItem extends GUIItem {
     public void onClick(Player player, Universe universe) {
         if (universe.isAllowPvP()){
             universe.allowPvP(false);
-            player.sendMessage(Utils.chat("&cPVP is no longer allowed in &4" + universe.name()));
+            player.sendMessage(Utils.chat("&cPVP is no longer allowed in &4" + universe.serverWorld().getName()));
         }else{
             universe.allowPvP(true);
-            player.sendMessage(Utils.chat("&2PVP is now allowed in &a" + universe.name()));
+            player.sendMessage(Utils.chat("&2PVP is now allowed in &a" + universe.serverWorld().getName()));
         }
         incrementIndex();
     }

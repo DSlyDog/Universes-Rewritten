@@ -32,6 +32,7 @@ public class OverrideCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             OverridesGUI.getFor(player, plugin).build();
+            player.sendMessage();
             player.openInventory(OverridesGUI.getFor(player, plugin).get());
             Bukkit.getPluginManager().registerEvents(new OverridesInventoryClick(plugin, player.getUniqueId().toString()), plugin);
             if (OverridesGUI.getFor(player, plugin).size() == 0){

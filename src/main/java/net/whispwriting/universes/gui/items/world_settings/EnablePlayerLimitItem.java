@@ -30,10 +30,10 @@ public class EnablePlayerLimitItem extends GUIItem {
     public void onClick(Player player, Universe universe) {
         if (universe.isPlayerLimitEnabled()){
             universe.setPlayerLimitEnabled(false);
-            player.sendMessage(Utils.chat("&cPlayer limit has been disabled in &4" + universe.name()));
+            player.sendMessage(Utils.chat("&cPlayer limit has been disabled in &4" + universe.serverWorld().getName()));
         }else{
             universe.setPlayerLimitEnabled(true);
-            player.sendMessage(Utils.chat("&2Player limit has been enabled in &a" + universe.name()));
+            player.sendMessage(Utils.chat("&2Player limit has been enabled in &a" + universe.serverWorld().getName()));
         }
         incrementIndex();
     }

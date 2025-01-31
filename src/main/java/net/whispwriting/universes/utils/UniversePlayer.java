@@ -217,7 +217,6 @@ public class UniversePlayer {
     }
 
     public Location loadBedLocation(Universe universe){
-        //System.out.println(bedSpawns);
         JsonObject bedSpawn;
         if (Universes.plugin.perWorldBedRespawn)
             bedSpawn = bedSpawns.getAsJsonObject(universe.name());

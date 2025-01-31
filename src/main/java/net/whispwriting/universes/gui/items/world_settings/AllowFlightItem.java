@@ -31,12 +31,12 @@ public class AllowFlightItem extends GUIItem {
     public void onClick(Player player, Universe universe, Universes plugin) {
         if (universe.isAllowFlight()) {
             universe.allowFlight(false);
-            player.sendMessage(Utils.chat("&cFlight has been disabled in &4" + universe.name()));
+            player.sendMessage(Utils.chat("&cFlight has been disabled in &4" + universe.serverWorld().getName()));
             Collection<Player> players = universe.serverWorld().getPlayers();
             for (Player p : players) {
                 if (p.isFlying()) {
                     PlayerSettingsFile playerSettingsFile = new PlayerSettingsFile(plugin, p.getUniqueId().toString());
-                    ;
+
                     boolean flightOverride = playerSettingsFile.get().getBoolean("flightOverride");
                     if (!flightOverride) {
                         p.setFlying(false);
@@ -46,7 +46,7 @@ public class AllowFlightItem extends GUIItem {
             }
         }else{
             universe.allowFlight(true);
-            player.sendMessage(Utils.chat("&2Flight has been enabled in &a" + universe.name()));
+            player.sendMessage(Utils.chat("&2Flight has been enabled in &a" + universe.serverWorld().getName()));
         }
     }
 }

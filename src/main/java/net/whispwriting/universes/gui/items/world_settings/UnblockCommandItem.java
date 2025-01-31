@@ -26,7 +26,7 @@ public class UnblockCommandItem extends GUIItem {
     @Override
     public void onClick(Player player, Universe universe, Universes plugin) {
         player.closeInventory();
-        if (universe.blockedCommands().size() == 0){
+        if (universe.blockedCommands().isEmpty()){
             player.sendMessage(ChatColor.RED + "There are no blocked commands in this world.");
             return;
         }

@@ -23,6 +23,6 @@ public class WorldSpawnItem extends GUIItem {
     @Override
     public void onClick(Player player, Universe universe) {
         universe.setSpawn(player.getLocation());
-        player.sendMessage(Utils.chat("&2Spawn point for world &a" + universe.name() + " &2has been set to where you stand."));
+        player.sendMessage(Utils.chat("&2Spawn point for world &a" + universe.serverWorld().getName() + " &2has been set to where you stand."));
     }
 }

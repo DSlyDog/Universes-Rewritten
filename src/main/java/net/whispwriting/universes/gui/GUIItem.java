@@ -30,7 +30,8 @@ public class GUIItem {
 
     public GUIItem(){}
 
-    public void create(String displayName, int amount, boolean useEnchantment, boolean currentValue, Material[] materials, List<String>... lore) {
+    @SafeVarargs
+    public final void create(String displayName, int amount, boolean useEnchantment, boolean currentValue, Material[] materials, List<String>... lore) {
         create(displayName, amount, useEnchantment, materials, lore);
         isEnchanted = !currentValue;
 
@@ -38,7 +39,8 @@ public class GUIItem {
             incrementIndex();
     }
 
-    public void create(String displayName, int amount, boolean useEnchantment, int currentValue, Material[] materials, List<String>... lore) {
+    @SafeVarargs
+    public final void create(String displayName, int amount, boolean useEnchantment, int currentValue, Material[] materials, List<String>... lore) {
         create(displayName, amount, useEnchantment, materials, lore);
 
         for (int i=0; i<currentValue; i++){

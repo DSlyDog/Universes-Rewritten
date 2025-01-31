@@ -25,7 +25,7 @@ public class WorldLoader {
             Bukkit.getLogger().log(Level.INFO, "[Universes] First time setup complete");
         }else{
             for (String group : plugin.groupsFile.get().getConfigurationSection("").getKeys(false)){
-                for (String world : plugin. groupsFile.get().getStringList(group)){
+                for (String world : plugin.groupsFile.get().getStringList(group)){
                     plugin.groups.put(world, group);
                 }
             }
@@ -84,7 +84,7 @@ public class WorldLoader {
 
         Generator generator = new Generator(plugin, file.getName());
         generator.setEnvironment(getEnvironment(environment, null));
-        if (generatorName == null || !generatorName.equals(""))
+        if (generatorName != null && !generatorName.isEmpty())
             generator.setGenerator(generatorName);
         generator.setSeed(seed);
         generator.createWorld();
@@ -166,7 +166,7 @@ public class WorldLoader {
                 return World.Environment.NORMAL;
             case "nether":
                 return World.Environment.NETHER;
-            case "end":
+            case "the_end":
                 return World.Environment.THE_END;
             default:
                 if (sender != null)

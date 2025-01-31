@@ -11,15 +11,20 @@ import org.bukkit.inventory.Inventory;
 import java.util.*;
 
 public class WorldSettingsUI implements GUI {
+
     private static Map<String, WorldSettingsUI> instances = new HashMap<>();
+
     private Universe universe;
-    private List<GUIItem> items = new ArrayList<>();
-    private int lastIndex = 0;
+    private Map<String, GUIItem> items = new HashMap<>();
+    private int lastIndex;
     private String name;
     private Inventory inventory;
+
     @Override
     public void build() {
-        lastIndex = 0;
+        if (!items.isEmpty())
+            return;
+
         GUIItem pvpItem = new PVPItem(universe.isAllowPvP());
         GUIItem spawnItem = new WorldSpawnItem();
         GUIItem animalsItem = new AllowAnimalsItem(universe.isAllowAnimals());
@@ -49,7 +54,7 @@ public class WorldSettingsUI implements GUI {
 
     @Override
     public void updateItem(int index) {
-        GUIItem item = items.get(index);
+        GUIItem item = items.get(inventory.getItem(index).getItemMeta().getDisplayName());
         inventory.setItem(index, item.getAsItemStack());
     }
 
@@ -60,25 +65,28 @@ public class WorldSettingsUI implements GUI {
 
     @Override
     public GUIItem getItem(int index) {
-        return items.get(index);
+        return items.get(inventory.getItem(index).getItemMeta().getDisplayName());
     }
 
     public void insertItem(GUIItem item){
-        items.add(item);
+        if (items.containsKey(item.getName()) || lastIndex == SIZE.TWO.getValue() - 1)
+            return;
+
+        items.put(item.getName(), item);
         inventory.setItem(lastIndex, item.getAsItemStack());
         lastIndex++;
     }
 
     private WorldSettingsUI(Universe universe){
         this.universe = universe;
-        this.name = "§6§l" + universe.name() + "'s Settings";
+        this.name = "§6§l" + universe.serverWorld().getName() + "'s Settings";
         this.inventory = Bukkit.createInventory(null, SIZE.TWO.getValue(), name);
     }
 
     public static WorldSettingsUI getFor(Universe universe){
-        if (!instances.containsKey(universe.name())){
-            instances.put(universe.name(), new WorldSettingsUI(universe));
+        if (!instances.containsKey(universe.serverWorld().getName())){
+            instances.put(universe.serverWorld().getName(), new WorldSettingsUI(universe));
         }
-        return instances.get(universe.name());
+        return instances.get(universe.serverWorld().getName());
     }
 }

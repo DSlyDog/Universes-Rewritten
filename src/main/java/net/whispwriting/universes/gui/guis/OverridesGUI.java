@@ -6,6 +6,7 @@ import net.whispwriting.universes.gui.GUI;
 import net.whispwriting.universes.gui.GUIItem;
 import net.whispwriting.universes.gui.items.overrides.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -17,40 +18,42 @@ public class OverridesGUI implements GUI {
 
     private Player player;
     private Universes plugin;
-    private List<GUIItem> items = new ArrayList<>();
-    private int lastIndex = 0;
+    private Map<String, GUIItem> items = new HashMap<>();
+    private int lastIndex;
     private String name = "§2§lOverrides";
     private Inventory inventory = Bukkit.createInventory(null, SIZE.ONE.getValue(), name);
+
     @Override
     public void build() {
+        items.clear();
+        inventory.clear();
         lastIndex = 0;
         PlayerSettingsFile playerSettings = new PlayerSettingsFile(plugin, player.getUniqueId().toString());;
-        boolean gameModeOverride = playerSettings.get().getBoolean("gameModeOverride");
-        boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
-        boolean flightOverride = playerSettings.get().getBoolean("flightOverride");
-        boolean perWorldInvOverride = playerSettings.get().getBoolean("perWorldInvOverride");
-        boolean overrideBlockedCommands = playerSettings.get().getBoolean("blockedCommandsOverride");
 
-        GUIItem gameModeItem = new GameModeOverride(gameModeOverride);
-        GUIItem fullWorldItem = new FullWorldOverride(canJoinFullWorlds);
-        GUIItem flightItem = new FlightOverride(flightOverride);
-        GUIItem perWorldInventoriesItem = new PerWorldInventoriesOverride(perWorldInvOverride);
-        GUIItem blockedCommandsItem = new BlockedCommandsOverride(overrideBlockedCommands);
+        if (player.hasPermission("Universes.override.gamemode")) {
+            boolean gameModeOverride = playerSettings.get().getBoolean("gameModeOverride");
+            insertItem(new GameModeOverride(gameModeOverride));
+        }
 
-        if (player.hasPermission("Universes.override.gamemode"))
-            insertItem(gameModeItem);
+        if (player.hasPermission("Universes.override.fullworld")) {
+            boolean canJoinFullWorlds = playerSettings.get().getBoolean("canJoinFullWorlds");
+            insertItem(new FullWorldOverride(canJoinFullWorlds));
+        }
 
-        if (player.hasPermission("Universes.override.fullworld"))
-            insertItem(fullWorldItem);
+        if (player.hasPermission("Universes.override.flight")) {
+            boolean flightOverride = playerSettings.get().getBoolean("flightOverride");
+            insertItem(new FlightOverride(flightOverride));
+        }
 
-        if (player.hasPermission("Universes.override.flight"))
-            insertItem(flightItem);
+        if (player.hasPermission("Universes.override.perworldinv")) {
+            boolean perWorldInvOverride = playerSettings.get().getBoolean("perWorldInvOverride");
+            insertItem(new PerWorldInventoriesOverride(perWorldInvOverride));
+        }
 
-        if (player.hasPermission("Universes.override.perworldinv"))
-            insertItem(perWorldInventoriesItem);
-
-        if (player.hasPermission("Universes.override.blockedCommands"))
-            insertItem(blockedCommandsItem);
+        if (player.hasPermission("Universes.override.blockedCommands")) {
+            boolean overrideBlockedCommands = playerSettings.get().getBoolean("blockedCommandsOverride");
+            insertItem(new BlockedCommandsOverride(overrideBlockedCommands));
+        }
     }
 
     @Override
@@ -60,12 +63,12 @@ public class OverridesGUI implements GUI {
 
     @Override
     public GUIItem getItem(int index) {
-        return items.get(index);
+        return items.get(inventory.getItem(index).getItemMeta().getDisplayName());
     }
 
     @Override
     public void updateItem(int index) {
-        GUIItem item = items.get(index);
+        GUIItem item = items.get(inventory.getItem(index).getItemMeta().getDisplayName());
         inventory.setItem(index, item.getAsItemStack());
     }
 
@@ -79,7 +82,7 @@ public class OverridesGUI implements GUI {
     }
 
     private void insertItem(GUIItem item){
-        items.add(item);
+        items.put(item.getName(), item);
         inventory.setItem(lastIndex, item.getAsItemStack());
         lastIndex++;
     }

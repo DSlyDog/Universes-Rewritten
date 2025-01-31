@@ -37,7 +37,6 @@ public class ModifyCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 Universe universe = plugin.universes.get(player.getWorld().getName());
-                //player.openInventory(WorldSettingsUI_Old.GUI(player, plugin.universes.get(player.getWorld().getName()), plugin));
                 WorldSettingsUI.getFor(universe).build();
                 player.openInventory(WorldSettingsUI.getFor(universe).get());
                 Bukkit.getPluginManager().registerEvents(new ModifyInventoryClick(universe, player.getUniqueId().toString(), plugin), plugin);

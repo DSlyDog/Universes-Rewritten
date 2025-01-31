@@ -36,10 +36,10 @@ public class AllowMonstersItem extends GUIItem {
                     e.remove();
                 }
             }
-            player.sendMessage(Utils.chat("&cMonsters are no longer allowed in &4" + universe.name()));
+            player.sendMessage(Utils.chat("&cMonsters are no longer allowed in &4" + universe.serverWorld().getName()));
         }else{
             universe.allowMonsters(true);
-            player.sendMessage(Utils.chat("&2Monsters are now allowed in &a" + universe.name()));
+            player.sendMessage(Utils.chat("&2Monsters are now allowed in &a" + universe.serverWorld().getName()));
         }
         incrementIndex();
     }

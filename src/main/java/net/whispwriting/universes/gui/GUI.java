@@ -1,7 +1,5 @@
 package net.whispwriting.universes.gui;
 
-import net.whispwriting.universes.Universes;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 public interface GUI {
