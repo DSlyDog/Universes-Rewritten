@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class GUIItem {
+public abstract class GUIItem {
 
     private String displayName;
     private int amount = 1;
