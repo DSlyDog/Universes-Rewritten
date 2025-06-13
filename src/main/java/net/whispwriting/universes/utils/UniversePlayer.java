@@ -1,24 +1,16 @@
 package net.whispwriting.universes.utils;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.PlayerAccountFile;
-import net.whispwriting.universes.files.PlayerSettingsFile;
-import net.whispwriting.universes.utils.sql.SQL;
-import net.whispwriting.universes.utils.sql.SQLResult;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class UniversePlayer {
 

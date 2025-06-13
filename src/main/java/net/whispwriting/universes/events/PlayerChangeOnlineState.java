@@ -5,7 +5,6 @@ import net.whispwriting.universes.files.SpawnFile;
 import net.whispwriting.universes.utils.InventoryManagement;
 import net.whispwriting.universes.utils.Universe;
 import net.whispwriting.universes.utils.UniversePlayer;
-import net.whispwriting.universes.utils.sql.SQLResult;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,13 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class PlayerChangeOnlineState implements Listener {
 

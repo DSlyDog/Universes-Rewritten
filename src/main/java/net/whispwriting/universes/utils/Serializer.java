@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.files.PlayerInventoryFile;
-import net.whispwriting.universes.utils.sql.SQL;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;

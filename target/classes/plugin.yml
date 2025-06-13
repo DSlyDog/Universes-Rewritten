@@ -1,5 +1,5 @@
 name: Universes
-version: 6.0.0-beta9
+version: 6.0.0-beta12
 main: net.whispwriting.universes.Universes
 api-version: "1.20"
 prefix: Universes
@@ -72,10 +72,6 @@ commands:
     description: Teleports the user to the world spawn
     usage: /universespawn
     aliases: us
-  universeconvert:
-    description: convert worlds to new storage method
-    usage: /uconvert
-    aliases: uco
   universeinfo:
     description: displays the info for a given world
     usage: /universeinfo
@@ -143,9 +139,6 @@ permissions:
   Universes.spawn:
     description: allows using /universespawn
     default: op
-  Universes.convert:
-    description: allows using /universeconvert
-    default: op
   Universes.resetplayercount:
     description: allows /universeresetplayercount
     default: op
@@ -167,9 +160,6 @@ permissions:
       Universes.reload: true
       Universes.usetspawn: true
       Universes.spawn: true
-      Universes.convert: true
       Universe.resetplayercount: true
       Universe.info: true
-      Universes.economy.admin: true
-      Universes.economy.use: true
       Universes.teleport.*: true
