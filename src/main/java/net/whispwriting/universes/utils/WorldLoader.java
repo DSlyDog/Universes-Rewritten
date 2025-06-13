@@ -25,13 +25,25 @@ public class WorldLoader {
             Bukkit.getLogger().log(Level.INFO, "[Universes] First time setup complete");
         }else{
             for (String group : plugin.groupsFile.get().getConfigurationSection("").getKeys(false)){
-                for (String world : plugin. groupsFile.get().getStringList(group)){
+                for (String world : plugin.groupsFile.get().getStringList(group)){
                     plugin.groups.put(world, group);
                 }
             }
             File[] worlds = worldDir.listFiles();
             for (File world : worlds){
                 standardStartup(world, plugin);
+            }
+
+            for (World world : Bukkit.getWorlds()){
+                if (!plugin.universes.containsKey(world.getName())){
+                    Bukkit.getLogger().log(Level.INFO, "[Universes] Settings not found for world " + world.getName() + "." +
+                            " Creating settings now.");
+
+                    String groupName = getWorldGroup(world, plugin, plugin.groupsFile);
+                    createUniverse(plugin, world, groupName);
+
+                    Bukkit.getLogger().log(Level.INFO, "[Universes] Settings successfully created for world " + world.getName());
+                }
             }
         }
     }
@@ -43,19 +55,9 @@ public class WorldLoader {
             return;
         }
         for (World world : Bukkit.getWorlds()){
-            WorldSettingsFile worldSettings = new WorldSettingsFile(plugin, world.getName());
-            worldSettings.setDefaults(world, world.getEnvironment().name().toLowerCase(), null);
-            worldSettings.save();
-            world.setDifficulty(EASY);
-            Universe universe = new Universe(world.getName(), world, true, true, true,
-                    GameMode.SURVIVAL, -1, world.getSpawnLocation(), world.getName(), true,
-                    false, worldSettings, new ArrayList<>());
-            plugin.universes.put(world.getName(), universe);
+            String groupName = getWorldGroup(world, plugin, plugin.groupsFile);
+            createUniverse(plugin, world, groupName);
         }
-        GroupsFile groups = new GroupsFile(plugin);
-
-        groups.setDefaults();
-        groups.save();
 
         Universes.plugin.config.writeCommentsFistTime();
         Universes.plugin.config.writeComments();
@@ -84,7 +86,7 @@ public class WorldLoader {
 
         Generator generator = new Generator(plugin, file.getName());
         generator.setEnvironment(getEnvironment(environment, null));
-        if (generatorName == null || !generatorName.equals(""))
+        if (generatorName != null && !generatorName.isEmpty())
             generator.setGenerator(generatorName);
         generator.setSeed(seed);
         generator.createWorld();
@@ -166,7 +168,7 @@ public class WorldLoader {
                 return World.Environment.NORMAL;
             case "nether":
                 return World.Environment.NETHER;
-            case "end":
+            case "the_end":
                 return World.Environment.THE_END;
             default:
                 if (sender != null)
@@ -222,5 +224,50 @@ public class WorldLoader {
                     sender.sendMessage(ChatColor.RED + "Invalid world type, defaulting to normal world.");
                 return WorldType.NORMAL;
         }
+    }
+
+    private static void createUniverse(Universes plugin, World world, String groupName) {
+        WorldSettingsFile worldSettings = new WorldSettingsFile(plugin, world.getName());
+        worldSettings.setDefaults(world, world.getEnvironment().name().toLowerCase(), null);
+        worldSettings.save();
+        world.setDifficulty(EASY);
+
+        Universe universe = new Universe(groupName, world, true, true, true,
+                GameMode.SURVIVAL, -1, world.getSpawnLocation(), world.getName(), true,
+                false, worldSettings, new ArrayList<>());
+
+        universe.save();
+
+        plugin.universes.put(world.getName(), universe);
+    }
+
+    private static String getWorldGroup(World world, Universes plugin, GroupsFile groupsFile){
+        String worldName = world.getName();
+        String overworldName;
+
+        if (worldName.endsWith("_nether")){
+            overworldName = worldName.substring(0, worldName.length() - "_nether".length());
+        }else if (worldName.endsWith("_the_end")){
+            overworldName = worldName.substring(0, worldName.length() - "_the_end".length());
+        }else{
+            overworldName = worldName;
+        }
+
+        if (plugin.groups.containsKey(overworldName)){
+            String groupName = plugin.groups.get(overworldName);
+            plugin.groups.put(worldName, groupName);
+            List<String> groupList = groupsFile.get().getStringList(groupName);
+            groupList.add(worldName);
+            groupsFile.get().set(groupName, groupList);
+            groupsFile.save();
+        }else{
+            plugin.groups.put(overworldName, overworldName);
+            List<String> groupList = new ArrayList<>();
+            groupList.add(worldName);
+            groupsFile.get().set(overworldName, groupList);
+            groupsFile.save();
+        }
+
+        return overworldName;
     }
 }

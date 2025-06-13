@@ -1,11 +1,8 @@
 package net.whispwriting.universes;
 
-import net.milkbowl.vault.economy.Economy;
 import net.whispwriting.universes.files.*;
-import net.whispwriting.universes.guis.WorldSettingsUI;
+import net.whispwriting.universes.gui.WorldSettingsUI_Old;
 import net.whispwriting.universes.utils.*;
-import net.whispwriting.universes.utils.economy.EconomyHandler;
-import net.whispwriting.universes.utils.sql.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -30,6 +27,7 @@ public final class Universes extends JavaPlugin {
     public boolean perWorldInventories;
     public boolean inventoryGrouping;
     public boolean perWorldStats;
+    public boolean removeEffectsOnWorldChange;
     public boolean useRespawnWorld;
     public boolean trackLastLocation;
     public boolean prefixChat;
@@ -52,8 +50,6 @@ public final class Universes extends JavaPlugin {
     public boolean returnToPreviousLocation;
     public String currencySingular, currencyPlural;
     public String currencyIndicator;
-    public static Economy econ;
-    public VaultHook vaultHook;
     public static Universes plugin;
 
     @Override
@@ -65,9 +61,7 @@ public final class Universes extends JavaPlugin {
         UniverseLoader.registerTabCompleters(this);
         UniverseLoader.registerEventHandlers(this);
         UniverseLoader.loadWorlds(this);
-        WorldSettingsUI.init();
         startupComplete = true;
-        setupEconomy();
         checkConfigVersion();
 
         Bukkit.getScheduler().runTaskLater(this, new Runnable() {
@@ -76,12 +70,6 @@ public final class Universes extends JavaPlugin {
                 registerOnlinePlayers();
             }
         }, 20);
-    }
-
-    @Override
-    public void onDisable() {
-        if (vaultHook != null)
-            vaultHook.unhook();
     }
 
     private void registerOnlinePlayers(){
@@ -94,10 +82,6 @@ public final class Universes extends JavaPlugin {
             uPlayer.buildPreviousLocations();
             onlinePlayers.put(name, uPlayer);
             universes.get(world).incrementPlayerCount();
-            if (useEconomy) {
-                if (econ != null)
-                    uPlayer.buildBalances();
-            }
             if (Bukkit.getPluginManager().getPlugin("Universe-Spawnify") != null){
                 uPlayer.buildBedLocations();
                 player.setBedSpawnLocation(uPlayer.loadBedLocation(universes.get(world)));
@@ -117,6 +101,7 @@ public final class Universes extends JavaPlugin {
         perWorldInventories = config.get().getBoolean("per-world-inventories");
         inventoryGrouping = config.get().getBoolean("per-world-inventory-grouping");
         perWorldStats = config.get().getBoolean("per-world-stats");
+        removeEffectsOnWorldChange = config.get().getBoolean("remove-effects-on-world-change");
         useRespawnWorld = config.get().getBoolean("use-respawnWorld");
         trackLastLocation = config.get().getBoolean("track-previous-locations");
         saveLastLocOnDeath = plugin.config.get().getBoolean("save-location-on-death");
@@ -150,28 +135,6 @@ public final class Universes extends JavaPlugin {
 
         if (!pluginVersion.equals(configVersion))
             config.writeComments();
-    }
-
-    public boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            Bukkit.getLogger().log(Level.WARNING, "[Universes] Economy could not be enabled. Vault is missing. " +
-                    "Please install vault if you wish to use Universes economy.");
-            return false;
-        }
-
-        vaultHook = new VaultHook();
-
-        if (!useEconomy)
-            return false;
-
-        vaultHook.hook();
-
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
     }
 
     public void updateInstanceVariable(){

@@ -1,19 +1,13 @@
 package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.WorldSettingsFile;
-import net.whispwriting.universes.guis.Utils;
-import net.whispwriting.universes.guis.WorldSettingsUI;
+import net.whispwriting.universes.gui.Utils;
 import net.whispwriting.universes.utils.Universe;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.InputMismatchException;
 
 public class ChangePlayerLimit implements Listener {
 

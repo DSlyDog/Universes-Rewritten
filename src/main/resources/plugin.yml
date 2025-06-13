@@ -1,7 +1,7 @@
 name: Universes
 version: ${project.version}
 main: net.whispwriting.universes.Universes
-api-version: "1.17"
+api-version: "1.20"
 prefix: Universes
 authors: [WhispTheFox]
 description: A plugin to allow for making more worlds in the server
@@ -72,24 +72,10 @@ commands:
     description: Teleports the user to the world spawn
     usage: /universespawn
     aliases: us
-  universeconvert:
-    description: convert worlds to new storage method
-    usage: /uconvert
-    aliases: uco
   universeinfo:
     description: displays the info for a given world
     usage: /universeinfo
     aliases: uinfo
-  ueconomy:
-    description: admin economy command
-    usage: /ueconomy
-    aliases:
-      - ueco
-  ubalance:
-    description: check the player balance
-    usage: /ubalance
-    aliases:
-      - ubal
   universeresetplayercount:
     description: reset the player count for a given world
     usage: /universeresetplayercount
@@ -153,21 +139,12 @@ permissions:
   Universes.spawn:
     description: allows using /universespawn
     default: op
-  Universes.convert:
-    description: allows using /universeconvert
-    default: op
   Universes.resetplayercount:
     description: allows /universeresetplayercount
     default: op
   Universes.info:
     description: allows using /universeinfo
     default: op
-  Universes.economy.admin:
-    description: allows using /ueconomy
-    default: op
-  Universes.economy.use:
-    description: allows using basic economy commands like /bal and /pay
-    default: true
   Universes.*:
     description: Wildcard permission
     default: op
@@ -183,9 +160,6 @@ permissions:
       Universes.reload: true
       Universes.usetspawn: true
       Universes.spawn: true
-      Universes.convert: true
       Universe.resetplayercount: true
       Universe.info: true
-      Universes.economy.admin: true
-      Universes.economy.use: true
       Universes.teleport.*: true

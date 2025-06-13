@@ -2,10 +2,8 @@ package net.whispwriting.universes.commands;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.events.KitsInventoryClick;
-import net.whispwriting.universes.files.ConfigFile;
-import net.whispwriting.universes.files.GroupsFile;
-import net.whispwriting.universes.guis.KitUI;
-import net.whispwriting.universes.guis.Utils;
+import net.whispwriting.universes.gui.KitUI;
+import net.whispwriting.universes.gui.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

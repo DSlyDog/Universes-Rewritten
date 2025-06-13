@@ -1,8 +1,8 @@
 package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.guis.KitUI;
-import net.whispwriting.universes.guis.UIItemData;
+import net.whispwriting.universes.gui.KitUI;
+import net.whispwriting.universes.gui.UIItemData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;

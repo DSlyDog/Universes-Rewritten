@@ -2,8 +2,8 @@ package net.whispwriting.universes.commands;
 
 import net.whispwriting.universes.Universes;
 import net.whispwriting.universes.events.OverridesInventoryClick;
-import net.whispwriting.universes.files.PlayerSettingsFile;
-import net.whispwriting.universes.guis.OverrideUI;
+import net.whispwriting.universes.gui.OverrideUI;
+import net.whispwriting.universes.gui.guis.OverridesGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,11 +31,11 @@ public class OverrideCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            OverrideUI.init();
-            OverrideUI.i = -1;
-            player.openInventory(OverrideUI.GUI(player, plugin));
+            OverridesGUI.getFor(player, plugin).build();
+            player.sendMessage();
+            player.openInventory(OverridesGUI.getFor(player, plugin).get());
             Bukkit.getPluginManager().registerEvents(new OverridesInventoryClick(plugin, player.getUniqueId().toString()), plugin);
-            if (OverrideUI.i == -1){
+            if (OverridesGUI.getFor(player, plugin).size() == 0){
                 player.closeInventory();
                 player.sendMessage(ChatColor.DARK_RED + "You do not have permission to use any overrides.");
             }

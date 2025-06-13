@@ -21,18 +21,6 @@ public class GroupsFile extends AbstractFile{
         super(pl, "groups.yml", "");
     }
 
-    public void setDefaults(){
-        if (file.length() > 0)
-            return;
-
-        World world = Bukkit.getWorlds().get(0);
-        List<String> defaultGroup = new ArrayList<>();
-        defaultGroup.add(world.getName());
-        defaultGroup.add(world.getName()+"_nether");
-        defaultGroup.add(world.getName()+"_the_end");
-        config.set("default", defaultGroup);
-    }
-
     public void update(CommandSender sender){
         Map<String, List<String>> groups = new HashMap<>();
         for (World world : Bukkit.getWorlds()){

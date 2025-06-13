@@ -1,11 +1,11 @@
 package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.guis.OverrideUI;
-import net.whispwriting.universes.guis.UIItemData;
-import net.whispwriting.universes.guis.Utils;
-import net.whispwriting.universes.guis.WorldSettingsUI;
-import org.bukkit.Material;
+import net.whispwriting.universes.gui.UIItemData;
+import net.whispwriting.universes.gui.WorldSettingsUI_Old;
+import net.whispwriting.universes.gui.guis.OverridesGUI;
+import net.whispwriting.universes.gui.guis.WorldSettingsUI;
+import net.whispwriting.universes.utils.Universe;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -16,27 +16,30 @@ import org.bukkit.inventory.ItemStack;
 
 public class ModifyInventoryClick implements Listener {
 
-    private Universes plugin;
+    private Universe universe;
     private String uuid;
-    public ModifyInventoryClick(Universes pl, String uid){
-        plugin = pl;
-        uuid = uid;
+    private Universes plugin;
+    public ModifyInventoryClick(Universe universe, String uid, Universes plugin){
+        this.universe = universe;
+        this.uuid = uid;
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent e){
-        if (!uuid.equals(e.getWhoClicked().getUniqueId().toString())){
+        if (!uuid.equals(e.getWhoClicked().getUniqueId().toString()))
             return;
-        }
+
+        if (e.getClick().isKeyboardClick())
+            return;
+
+        e.setCancelled(true);
         try {
-            ItemStack item = e.getCurrentItem();
-            UIItemData itemData = WorldSettingsUI.items.get(item.getType());
-            if (item.getItemMeta().getLocalizedName().equals(itemData.getID())) {
-                e.setCancelled(true);
-                WorldSettingsUI.clicked((Player) e.getWhoClicked(), plugin, e.getCurrentItem(), e.getWhoClicked().getLocation().getWorld().getName());
-            }
-        }catch(NullPointerException err){
-            // do nothing
+            WorldSettingsUI.getFor(universe).getItem(e.getSlot()).onClick((Player) e.getWhoClicked(), universe);
+            WorldSettingsUI.getFor(universe).getItem(e.getSlot()).onClick((Player) e.getWhoClicked(), universe, plugin);
+            WorldSettingsUI.getFor(universe).updateItem(e.getSlot());
+        }catch(IndexOutOfBoundsException er){
+            er.printStackTrace();
         }
     }
 

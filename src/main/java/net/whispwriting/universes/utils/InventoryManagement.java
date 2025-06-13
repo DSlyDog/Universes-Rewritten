@@ -3,6 +3,7 @@ package net.whispwriting.universes.utils;
 import net.whispwriting.universes.Universes;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 public class InventoryManagement {
 
@@ -15,9 +16,11 @@ public class InventoryManagement {
         Universe toUniverse = plugin.universes.get(toWorld.getName());
         if (plugin.inventoryGrouping){
             if (!fromUniverse.name().equals(toUniverse.name())){
+                clearEffects(player, plugin);
                 loadInventory(player, toUniverse);
             }
         }else{
+            clearEffects(player, plugin);
             loadInventory(player, toUniverse);
         }
     }
@@ -41,4 +44,12 @@ public class InventoryManagement {
         player.storeStats();
     }
 
+    public static void clearEffects(UniversePlayer player, Universes plugin){
+        if (plugin.removeEffectsOnWorldChange) {
+            if (!player.spigotPlayer().getActivePotionEffects().isEmpty()){
+                for (PotionEffect effect : player.spigotPlayer().getActivePotionEffects())
+                    player.spigotPlayer().removePotionEffect(effect.getType());
+            }
+        }
+    }
 }

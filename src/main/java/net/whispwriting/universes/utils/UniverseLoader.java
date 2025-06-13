@@ -24,11 +24,8 @@ public class UniverseLoader {
         plugin.getCommand("universekits").setExecutor(new KitCommand(plugin));
         plugin.getCommand("usetspawn").setExecutor(new FirstJoinSpawnCommand(plugin.spawnFile));
         plugin.getCommand("universespawn").setExecutor(new SpawnCommand(plugin));
-        plugin.getCommand("universeconvert").setExecutor(new ConvertCommand(plugin));
         plugin.getCommand("universeinfo").setExecutor(new InfoCommand(plugin));
         plugin.getCommand("universeresetplayercount").setExecutor(new PlayerCountResetCommand(plugin));
-        plugin.getCommand("ueconomy").setExecutor(new EconomyCommand());
-        plugin.getCommand("ubalance").setExecutor(new BalanceCommand());
     }
 
     public static void registerTabCompleters(Universes plugin){
@@ -39,7 +36,6 @@ public class UniverseLoader {
         plugin.getCommand("universespawn").setTabCompleter(new TeleportTabComplete());
         plugin.getCommand("universeunload").setTabCompleter(new WorldListCompleter());
         plugin.getCommand("universeinfo").setTabCompleter(new WorldListCompleter());
-        plugin.getCommand("ueconomy").setTabCompleter(new EconomyAdminCompleter());
     }
     
     public static void registerEventHandlers(Universes plugin){

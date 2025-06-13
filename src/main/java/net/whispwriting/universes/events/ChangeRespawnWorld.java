@@ -1,12 +1,9 @@
 package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.WorldSettingsFile;
-import net.whispwriting.universes.guis.Utils;
-import net.whispwriting.universes.guis.WorldSettingsUI;
+import net.whispwriting.universes.gui.Utils;
+import net.whispwriting.universes.gui.guis.WorldSettingsUI;
 import net.whispwriting.universes.utils.Universe;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -17,23 +14,23 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChangeRespawnWorld implements Listener {
 
     private String uuid;
-    private Universe universeToModfy;
+    private Universe universe;
     private Universes plugin;
 
-    public ChangeRespawnWorld(String uuid, Universes plugin, Universe universeToModify){
+    public ChangeRespawnWorld(String uuid, Universes plugin, Universe universe){
         this.uuid = uuid;
-        this.universeToModfy = universeToModify;
+        this.universe = universe;
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event){
-        event.setCancelled(true);
         String uid = event.getPlayer().getUniqueId().toString();
         if (!uid.equals(uuid)){
-            event.setCancelled(false);
             return;
         }
+
+        event.setCancelled(true);
         String message = event.getMessage();
         String[] messageArray = message.split(" ");
         if (messageArray[0].equals("cancel")){
@@ -46,8 +43,7 @@ public class ChangeRespawnWorld implements Listener {
             event.getPlayer().sendMessage(Utils.chat("&cCould not find a world by that name. Please try again, or say \"cancel\" to cancel."));
             return;
         }
-        universeToModfy.setRespawnWorld(universe.serverWorld().getName());
-        universeToModfy.save();
+        this.universe.setRespawnWorld(universe.serverWorld().getName());
         event.getPlayer().sendMessage(Utils.chat("&2respawnWorld has been updated."));
         HandlerList.unregisterAll(ChangeRespawnWorld.this);
     }

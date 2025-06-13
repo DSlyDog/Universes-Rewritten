@@ -1,10 +1,9 @@
 package net.whispwriting.universes.events;
 
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.guis.OverrideUI;
-import net.whispwriting.universes.guis.UIItemData;
-import net.whispwriting.universes.guis.Utils;
-import org.bukkit.Material;
+import net.whispwriting.universes.gui.OverrideUI;
+import net.whispwriting.universes.gui.UIItemData;
+import net.whispwriting.universes.gui.guis.OverridesGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -24,18 +23,18 @@ public class OverridesInventoryClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e){
-        if (!uuid.equals(e.getWhoClicked().getUniqueId().toString())){
+        if (!uuid.equals(e.getWhoClicked().getUniqueId().toString()))
             return;
-        }
+
+        if (e.getClick().isKeyboardClick())
+            return;
+
+        e.setCancelled(true);
         try {
-            ItemStack item = e.getCurrentItem();
-            UIItemData itemData = OverrideUI.items.get(item.getType());
-            if (item.getItemMeta().getLocalizedName().equals(itemData.getID())) {
-                e.setCancelled(true);
-                OverrideUI.clickItem((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory(), plugin);
-            }
-        }catch(NullPointerException err){
-            // do nothing
+            OverridesGUI.getFor((Player) e.getWhoClicked(), plugin).getItem(e.getSlot()).onClick((Player) e.getWhoClicked(), plugin);
+            OverridesGUI.getFor((Player) e.getWhoClicked(), plugin).updateItem(e.getSlot());
+        }catch(IndexOutOfBoundsException er){
+            //do nothing
         }
     }
 

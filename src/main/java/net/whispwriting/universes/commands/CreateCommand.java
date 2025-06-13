@@ -73,7 +73,7 @@ public class CreateCommand implements CommandExecutor {
                             sender.sendMessage(ChatColor.GREEN + "Starting creation of corresponding end");
                             UniversesGenerator universesGeneratorEnd = new UniversesGenerator(plugin, args[0] + "_the_end");
                             WorldLoadEventHelper.getInstance().setCreateCommandExecuted(true);
-                            helper.makeWorld("end", universesGeneratorEnd, sender, args);
+                            helper.makeWorld("the_end", universesGeneratorEnd, sender, args);
                         }
                     }
                 }

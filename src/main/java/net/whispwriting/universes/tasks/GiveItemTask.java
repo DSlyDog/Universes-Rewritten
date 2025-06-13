@@ -1,14 +1,11 @@
 package net.whispwriting.universes.tasks;
 
 import net.whispwriting.universes.files.KitsFile;
-import net.whispwriting.universes.guis.Utils;
-import org.bukkit.ChatColor;
+import net.whispwriting.universes.gui.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

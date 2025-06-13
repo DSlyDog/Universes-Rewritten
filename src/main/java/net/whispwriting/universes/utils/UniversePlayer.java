@@ -1,24 +1,16 @@
 package net.whispwriting.universes.utils;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.whispwriting.universes.Universes;
-import net.whispwriting.universes.files.PlayerAccountFile;
-import net.whispwriting.universes.files.PlayerSettingsFile;
-import net.whispwriting.universes.utils.sql.SQL;
-import net.whispwriting.universes.utils.sql.SQLResult;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class UniversePlayer {
 
@@ -217,7 +209,6 @@ public class UniversePlayer {
     }
 
     public Location loadBedLocation(Universe universe){
-        //System.out.println(bedSpawns);
         JsonObject bedSpawn;
         if (Universes.plugin.perWorldBedRespawn)
             bedSpawn = bedSpawns.getAsJsonObject(universe.name());
@@ -248,20 +239,4 @@ public class UniversePlayer {
         this.previousLocations = previousLocations;
     }
 
-    public void buildBalances(){
-        if (Universes.plugin.inventoryGrouping) {
-            for (Map.Entry<String, String> group : Universes.plugin.groups.entrySet()) {
-                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), group.getValue());
-                Universes.econ.createPlayerAccount(player, group.getValue());
-                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
-                //Bukkit.getLogger().log(Level.INFO, group.getValue() + ": " + account.get().getDouble("balance"));
-            }
-        }else {
-            for (World world : Bukkit.getWorlds()) {
-                PlayerAccountFile account = new PlayerAccountFile(Universes.plugin, player.getUniqueId().toString(), world.getName());
-                Universes.econ.createPlayerAccount(player, world.getName());
-                Universes.econ.depositPlayer(player, account.get().getDouble("balance"));
-            }
-        }
-    }
 }
