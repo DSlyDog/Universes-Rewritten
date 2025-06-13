@@ -46,7 +46,7 @@ public class GameModeItem extends GUIItem {
         lore4.add(Utils.chat("&dClick to change GameMode."));
         lore4.add(Utils.chat("&2GameMode is currently Adventure."));
 
-        super.create(Utils.chat("&bGame Mode Override"), 1, false, GameModeValue.valueOf(currentSetting.name()).getValue(), materials, lore1, lore2, lore3, lore4);
+        super.create(Utils.chat("&bGame Mode"), 1, false, GameModeValue.valueOf(currentSetting.name()).getValue(), materials, lore1, lore2, lore3, lore4);
     }
 
     @Override
