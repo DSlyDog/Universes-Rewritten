@@ -168,7 +168,7 @@ public class WorldLoader {
                 return World.Environment.NORMAL;
             case "nether":
                 return World.Environment.NETHER;
-            case "the_end":
+            case "end":
                 return World.Environment.THE_END;
             default:
                 if (sender != null)
