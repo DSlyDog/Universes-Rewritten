@@ -9,6 +9,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -64,6 +65,9 @@ public class WorldLoader {
     }
 
     private static void standardStartup(File file, Universes plugin){
+        //TODO
+        //Add independent world existence check for Spigot and Paper APIs
+
         WorldSettingsFile worldSettings = new WorldSettingsFile(plugin, file.getName());
         double x = worldSettings.get().getDouble("spawn.x");
         double y = worldSettings.get().getDouble("spawn.y");
